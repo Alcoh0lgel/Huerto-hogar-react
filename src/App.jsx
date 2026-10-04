@@ -16,9 +16,9 @@ function App() {
           <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
         <div>
-          <h1>Hola Martín</h1>
+          <h1>Hola Chiqueees💋</h1>
           <p>
-            Somos NOSOTROS, espero que estes bien!
+            Comenzando el proyecto para pasar todo a react, animos!
           </p>
         </div>
         <button
