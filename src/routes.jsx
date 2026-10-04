@@ -2,11 +2,11 @@ import React from 'react';
 import { Routes, Route, createBrowserRouter } from 'react-router-dom';
 
 // 1. RUTAS PÚBLICAS / VISITANTE (logout)
-import Menu from './pages/logout/menu/menu';
-import Nosotros from './pages/logout/nosotros/nosotros';
-import Contacto from './pages/logout/contacto/contacto';
-import Blogs from './pages/logout/blogs/blogs';
-import Producto from './pages/logout/producto/producto';
+import Menu from './pages/logout/menu/menu_out';
+import Nosotros from './pages/logout/nosotros/nosotros_out';
+import Contacto from './pages/logout/contacto/contacto_out';
+import Blogs from './pages/logout/blogs/blogs_out';
+import Producto from './pages/logout/producto/producto_out';
 import Acceder from './pages/logout/acceder/acceder';
 import CrearCuenta from './pages/logout/crearCuenta/crearCuenta';
 
