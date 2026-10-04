@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavigationBarIn from '../../../components/navbar/navbarIn';
 
 const productosEstrellas = [
   {
@@ -60,6 +61,8 @@ export const MenuIn = () => {
   };
 
   return (
+    <>
+    <NavigationBarIn/>
     <main className="contenido-principal">
       
       {/* Portada de Presentación */}
@@ -111,6 +114,7 @@ export const MenuIn = () => {
       </section>
 
     </main>
+    </>
   );
 };
 

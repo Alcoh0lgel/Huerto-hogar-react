@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import styles from './navbar.module.css';
 
 function NavigationBar() {
   return (
@@ -12,7 +13,7 @@ function NavigationBar() {
         
         {/* Logo y Nombre */}
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center gap-2 py-0">
-          <img src="/img/HuertoHogar.png" alt="Huerto Hogar" className="logo-navbar" />
+          <img src="/img/HuertoHogar.png" alt="Huerto Hogar" className={styles.logoNavbar}/>
           <span>Huerto Hogar</span>
         </Navbar.Brand>
 

@@ -1,7 +1,10 @@
 import React from 'react';
+import NavigationBarIn from '../../../components/navbar/navbarIn';
 
 function BlogsIn() {
   return (
+    <>
+    <NavigationBarIn/>
     <main className="contenido-principal py-4">
       <section id="noticias" className="container d-flex flex-column align-items-center">
         <h2 className="mb-4">Noticias Importantes</h2>
@@ -58,6 +61,7 @@ function BlogsIn() {
 
       </section>
     </main>
+    </>
   );
 }
 

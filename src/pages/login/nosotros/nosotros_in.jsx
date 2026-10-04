@@ -1,7 +1,10 @@
 import React from 'react';
+import NavigationBarIn from '../../../components/navbar/navbarIn';
 
 function NosotrosIn() {
   return (
+    <>
+    <NavigationBarIn/>
     <main className="contenido-principal py-4">
       <section id="contenido-nosotros" className="container">
         
@@ -59,6 +62,7 @@ function NosotrosIn() {
 
       </section>
     </main>
+    </>
   );
 }
 
