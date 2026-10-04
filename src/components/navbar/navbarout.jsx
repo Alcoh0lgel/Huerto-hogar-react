@@ -56,7 +56,7 @@ function NavigationBar() {
               <Nav.Link as={Link} to="/acceder" className="py-0 fw-semibold text-dark">
                 Acceder
               </Nav.Link>
-              <Nav.Link as={Link} to="/crear-cuenta" className="py-0 text-secondary">
+              <Nav.Link as={Link} to="/crearCuenta" className="py-0 text-secondary">
                 Crear una cuenta
               </Nav.Link>
             </div>
