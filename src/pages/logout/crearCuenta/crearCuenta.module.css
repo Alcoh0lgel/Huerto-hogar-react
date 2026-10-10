@@ -1,0 +1,8 @@
+
+#formularioCrear .contenedor {
+    font-family: "Montserrat", sans-serif;
+    text-align: center;
+    max-width: 500px;
+    margin: 50px auto 20px;   /* arriba | lados | abajo */
+    padding: 30px 15px;
+}
