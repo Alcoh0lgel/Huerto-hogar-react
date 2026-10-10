@@ -1,0 +1,15 @@
+.acceder{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 10px;
+    align-items: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.acceder a{
+    color:#333333;
+    text-decoration: none;
+    
+}
