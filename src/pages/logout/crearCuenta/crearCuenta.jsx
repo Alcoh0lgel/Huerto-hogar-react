@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import RegionesComunas from '../../../data/regiones'; 
-import App_navbarOut from '../../../components/navbar/navbarout'
-import styles from './CrearCuenta/'
+import RegionesComunas from '../../../data/regiones';
+import App_navbarOut from '../../../components/navbar/navbarout';
+import styles from './crearCuenta.module.css';
 
 const KEY_STORAGE = 'clave_storage';
 
@@ -11,7 +11,6 @@ const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 const validar = (datos) => {
   const errores = {};
 
-  
   const run = datos.run.trim().toUpperCase();
   if (run === '') {
     errores.run = 'El run es obligatorio.';
@@ -21,7 +20,6 @@ const validar = (datos) => {
     errores.run = 'El run debe tener numeros y un digito verificador';
   }
 
-
   const nombre = datos.nombre.trim();
   if (nombre === '') {
     errores.nombre = 'El nombre es obligatorio';
@@ -29,14 +27,12 @@ const validar = (datos) => {
     errores.nombre = 'Maximo 50 caracteres.';
   }
 
-  
   const apellido = datos.apellido.trim();
   if (apellido === '') {
     errores.apellido = 'Los apellidos son obligatorios';
   } else if (apellido.length > 100) {
     errores.apellido = 'Maximo 100 caracteres.';
   }
-
 
   const correo = datos.correo.trim();
   const dominio = correo.split('@')[1];
@@ -55,7 +51,6 @@ const validar = (datos) => {
     errores.password = 'La contraseña debe tener entre 4 y 10 caracteres';
   }
 
-  
   const direccion = datos.direccion.trim();
   if (direccion === '') {
     errores.direccion = 'La direccion es obligatoria';
@@ -88,7 +83,6 @@ export const CrearCuenta = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-   
     if (name === 'region') {
       setDatos({ ...datos, region: value, comuna: '' });
     } else {
@@ -100,7 +94,7 @@ export const CrearCuenta = () => {
     const nuevosErrores = validar(datos);
     setErrores(nuevosErrores);
 
-    if (Object.keys(nuevosErrores).length > 0) return; // hay errores, no se envía
+    if (Object.keys(nuevosErrores).length > 0) return;
 
     const nuevoUsuario = {
       run: datos.run.trim().toUpperCase(),
@@ -115,21 +109,25 @@ export const CrearCuenta = () => {
     };
 
     const lista = JSON.parse(localStorage.getItem(KEY_STORAGE)) || [];
-    lista.push(nuevoUsuario); // objeto directo, sin arreglo dentro de arreglo
+    lista.push(nuevoUsuario);
     localStorage.setItem(KEY_STORAGE, JSON.stringify(lista));
 
-    navigate('/'); 
+    navigate('/');
   };
 
   return (
     <>
-      <App_navbarOut/>
+      <App_navbarOut />
 
-      <main className="contenidoCrear">
-        <section id="formularioCrear">
-          <div className="contenedor">
-            <div className="logo">
-              <img src="/img/HuertoHogar.png" alt="logo huerto hogar" className="logo-formulario" />
+      <main className={styles.contenidoCrear}>
+        <section className={styles.formularioCrear}>
+          <div className={styles.contenedor}>
+            <div className={styles.logo}>
+              <img
+                src="/img/HuertoHogar.png"
+                alt="logo huerto hogar"
+                className={styles.logoFormulario}
+              />
               <h2>Crear Cuenta</h2>
 
               <p>Datos personales</p>
@@ -145,7 +143,7 @@ export const CrearCuenta = () => {
                   onChange={handleChange}
                 />
                 <label htmlFor="inputRun">Run (sin puntos ni guion)</label>
-                <div className="texto-error">{errores.run}</div>
+                <div className={styles.textoError}>{errores.run}</div>
               </div>
 
               <div className="form-floating mb-4">
@@ -160,7 +158,7 @@ export const CrearCuenta = () => {
                   onChange={handleChange}
                 />
                 <label htmlFor="inputNombre">Nombres</label>
-                <div className="texto-error">{errores.nombre}</div>
+                <div className={styles.textoError}>{errores.nombre}</div>
               </div>
 
               <div className="form-floating mb-4">
@@ -175,7 +173,7 @@ export const CrearCuenta = () => {
                   onChange={handleChange}
                 />
                 <label htmlFor="inputApellido">Apellidos</label>
-                <div className="texto-error">{errores.apellido}</div>
+                <div className={styles.textoError}>{errores.apellido}</div>
               </div>
 
               <p>Correo electrónico</p>
@@ -191,7 +189,7 @@ export const CrearCuenta = () => {
                   onChange={handleChange}
                 />
                 <label htmlFor="inputCorreo">Correo Electrónico</label>
-                <div className="texto-error">{errores.correo}</div>
+                <div className={styles.textoError}>{errores.correo}</div>
               </div>
 
               <p>Contraseña</p>
@@ -206,7 +204,7 @@ export const CrearCuenta = () => {
                   onChange={handleChange}
                 />
                 <label htmlFor="inputpassword">Contraseña</label>
-                <div className="texto-error">{errores.password}</div>
+                <div className={styles.textoError}>{errores.password}</div>
               </div>
 
               <p>Telefono</p>
@@ -272,12 +270,16 @@ export const CrearCuenta = () => {
                   onChange={handleChange}
                 />
                 <label htmlFor="inputDireccion">Direccion</label>
-                <div className="texto-error">{errores.direccion}</div>
+                <div className={styles.textoError}>{errores.direccion}</div>
               </div>
 
-              <div className="acceder">
-                <div className="btn-envio">
-                  <button type="button" className="btn btn-success py-2" onClick={handleSubmit}>
+              <div className={styles.acceder}>
+                <div className={styles.btnEnvio}>
+                  <button
+                    type="button"
+                    className="btn btn-success py-2"
+                    onClick={handleSubmit}
+                  >
                     Enviar
                   </button>
                 </div>
@@ -287,8 +289,6 @@ export const CrearCuenta = () => {
           </div>
         </section>
       </main>
-
-    
     </>
   );
 };

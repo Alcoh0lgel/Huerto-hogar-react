@@ -1,8 +1,42 @@
+.contenidoCrear {
+    min-height: 100vh;
+}
 
-#formularioCrear .contenedor {
+.formularioCrear .contenedor {
     font-family: "Montserrat", sans-serif;
     text-align: center;
     max-width: 500px;
-    margin: 50px auto 20px;   /* arriba | lados | abajo */
+    margin: 50px auto 20px;
     padding: 30px 15px;
+}
+
+.logo {
+    text-align: center;
+}
+
+.logoFormulario {
+    width: 100px;
+    margin-bottom: 10px;
+}
+
+.textoError {
+    color: red;
+    font-size: 0.85rem;
+    text-align: left;
+    min-height: 1.2rem;
+}
+
+.acceder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.btnEnvio {
+    width: 100%;
+}
+
+.btnEnvio button {
+    width: 100%;
 }
