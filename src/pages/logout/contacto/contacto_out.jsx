@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import styles from "./contacto_out.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
@@ -81,6 +82,7 @@ export const Contacto = () => {
       </main>
 
     </>
+
   );
 };
 
