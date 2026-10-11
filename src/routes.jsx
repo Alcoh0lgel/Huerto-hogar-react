@@ -16,6 +16,7 @@ import NosotrosIn from './pages/login/nosotros/nosotros_in';
 import ContactoIn from './pages/login/contacto/contacto_in';
 import BlogsIn from './pages/login/blogs/blogs_in';
 import ProductoIn from './pages/login/producto/producto_in';
+import Perfil from './pages/login/Perfil/perfil';
 
 // 3. RUTAS ADMINISTRADOR (admin)
 import AccederAdmin from './pages/admin/acceder/acceder_admin';
@@ -73,6 +74,10 @@ export const routes = createBrowserRouter([
     {
         path:'/login/producto',
         element:<ProductoIn/>
+    },
+    {
+        path:'login/perfil',
+        element:<Perfil/>
     },
     //Administrador
     {

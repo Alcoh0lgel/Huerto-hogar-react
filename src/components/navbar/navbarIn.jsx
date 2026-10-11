@@ -50,7 +50,7 @@ function NavigationBarIn() {
 
             {/* Dropdown de Perfil */}
             <NavDropdown title="Perfil" id="perfil-nav-dropdown">
-              <NavDropdown.Item href="#">Gestionar Perfil</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/login/perfil">Gestionar Perfil</NavDropdown.Item>
               <NavDropdown.Item href="#">
                 Seguimiento de Pedidos
               </NavDropdown.Item>
