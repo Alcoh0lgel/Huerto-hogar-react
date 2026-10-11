@@ -20,6 +20,8 @@ import ProductoIn from './pages/login/producto/producto_in';
 // 3. RUTAS ADMINISTRADOR (admin)
 import AccederAdmin from './pages/admin/acceder/acceder_admin';
 import MenuAdmin from './pages/admin/panel/menu_admin';
+import GestionProductos from './pages/admin/gestionproductos/gestion_productos';
+import BoletasAdmin from './pages/admin/boletas/boletas';
 
 export const routes = createBrowserRouter([
     //primero las publicas para no confundirnos
@@ -80,5 +82,13 @@ export const routes = createBrowserRouter([
     {
         path:'/admin/panel',
         element:<MenuAdmin/>
+    },
+    {
+        path:'/admin/productos',
+        element:<GestionProductos/>
+    },
+    {
+        path:'/admin/boletas',
+        element:<BoletasAdmin/>
     }
 ]);
