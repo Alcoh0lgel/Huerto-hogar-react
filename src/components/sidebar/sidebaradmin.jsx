@@ -31,6 +31,16 @@ export default function AdminSidebar({ vistaActiva }) {
                         🧾 Boletas de Compra
                     </Link>
                 </li>
+                <li className="nav-item mb-1">
+                    <Link 
+                        to="/admin/reportes" 
+                        state={{ seccion: 'reportes' }} // Opcional: si prefieres manejarlo por estado de ruta
+                        className={`nav-link w-100 text-start border ${vistaActiva === 'reportes' ? 'active border-primary shadow-sm' : 'border-transparent'}`}
+                        style={{ fontWeight: vistaActiva === 'reportes' ? '600' : '500', textDecoration: 'none' }}
+                    >
+                        Reportes
+                    </Link>
+                </li>
             </ul>
             <hr />
             <Link to="/" className="btn btn-outline-danger w-100 btn-sm">Salir</Link>
