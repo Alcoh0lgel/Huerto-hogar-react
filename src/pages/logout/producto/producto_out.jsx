@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import NavigationBar from '../../../components/navbar/navbarout'; // Ajusta la ruta a tu Navbar
+import { CartContext } from '../../../context/cartContext';
 
 // Arreglo de productos reusado
 const productosEstrellas = [
@@ -53,12 +54,10 @@ const productosEstrellas = [
   }
 ];
 
+
 function Producto() {
 
-  const agregarAlCarrito = (producto) => {
-    console.log("Añadido al carrito:", producto.nombre);
-    // Aquí conectarás más adelante la lógica para el carrito de compras
-  };
+  const { agregarAlCarrito } = useContext(CartContext);
 
   return (
     <>
@@ -102,7 +101,6 @@ function Producto() {
         </section>
 
         <section id="productosVenta" className="container mt-1 py-4">
-
           <h2 className="text-center mb-4">Nuestros Productos</h2>
 
           <div className="contenedor-cards row g-4">
@@ -110,8 +108,6 @@ function Producto() {
               <div key={item.id} className="col-12 col-md-6 col-lg-4">
                 <div className="card h-100 shadow-sm p-4">
                   <div className="row g-2 h-100">
-                    
-                    {/*Imagen*/}
                     <div className="col-4 h-100">
                       <img 
                         src={item.imagen} 
@@ -121,7 +117,6 @@ function Producto() {
                       />
                     </div>
 
-                    {/* Columna de Detalles y Botón*/}
                     <div className="col-8">
                       <div className="card-body p-0 d-flex flex-column h-100">
                         <h5 className="titulo-producto card-title fs-6 fw-bold mt-0 mb-1">
@@ -134,6 +129,7 @@ function Producto() {
                           {item.descripcion}
                         </p>
                         <div className="mt-auto">
+                          {/* 4. Aquí se llama a la función del context */}
                           <button 
                             className="btn btn-success btn-sm w-100"
                             onClick={() => agregarAlCarrito(item)}

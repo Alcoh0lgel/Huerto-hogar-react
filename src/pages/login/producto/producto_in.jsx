@@ -1,5 +1,6 @@
-import React from 'react';
 import NavigationBarIn from '../../../components/navbar/navbarIn';
+import { useContext } from 'react';
+import { CartContext } from '../../../context/cartContext';
 
 const productosEstrellas = [
   {
@@ -52,12 +53,10 @@ const productosEstrellas = [
   }
 ];
 
+
 function Producto() {
 
-  const agregarAlCarrito = (producto) => {
-    console.log("Añadido al carrito:", producto.nombre);
-    // Aquí conectarás más adelante la lógica para el carrito de compras
-  };
+  const { agregarAlCarrito } = useContext(CartContext);
 
   return (
     <>
@@ -135,8 +134,7 @@ function Producto() {
                         <div className="mt-auto">
                           <button 
                             className="btn btn-success btn-sm w-100"
-                            onClick={() => agregarAlCarrito(item)}
-                          >
+                            onClick={() => agregarAlCarrito(item)}>
                             Añadir al Carrito
                           </button>
                         </div>

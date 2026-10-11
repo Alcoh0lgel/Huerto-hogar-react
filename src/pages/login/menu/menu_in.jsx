@@ -57,7 +57,7 @@ export const MenuIn = () => {
   const navigate = useNavigate();
 
   const handleIrAProducto = (producto) => {
-    navigate('/producto'); 
+    navigate('/login/producto'); 
   };
 
   return (

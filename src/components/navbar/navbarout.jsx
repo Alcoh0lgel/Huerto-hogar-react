@@ -5,8 +5,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import styles from './navbar.module.css';
+import { CartContext } from '../../context/cartContext';
+import React, { useContext } from 'react';
+import { Badge } from 'react-bootstrap';
 
 function NavigationBar() {
+
+  const { carrito, handleOpenCarrito } = useContext(CartContext);
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
@@ -44,13 +50,13 @@ function NavigationBar() {
 
           {/* Sección Carrito + Acceder / Crear cuenta */}
           <div className="d-flex align-items-center gap-3">
-            <Button 
-              variant="primary" 
-              data-bs-toggle="offcanvas" 
-              data-bs-target="#offcanvasRight"
-              aria-controls="offcanvasRight"
-            >
-              🛒 Ver Carrito
+            <Button variant="primary" onClick={handleOpenCarrito}>
+              🛒 Ver Carrito{' '}
+              {carrito.length > 0 && (
+                <Badge bg="light" text="dark" className="ms-1">
+                  {carrito.length}
+                </Badge>
+              )}
             </Button>
 
             <div className="d-flex flex-column text-end small">
