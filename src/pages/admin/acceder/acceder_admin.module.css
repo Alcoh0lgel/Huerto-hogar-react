@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #F7F7F7;
+    color: #8B4513;
+}
+
+.loginMain {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.loginCard {
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    border: none;
+    max-width: 380px;
+    width: 100%;
+    padding: 1.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.loginTitle {
+    font-family: "Montserrat", sans-serif;
+    color: #333333;
+    font-weight: 600;
+}
+
+.formLabel {
+    color: #8B4513;
+    font-weight: 500;
+}
+
+.formControl {
+    font-family: "Montserrat", sans-serif;
+    border-color: #D3D3D3;
+}
+
+.formControl:focus {
+    border-color: #2E8B57;
+    box-shadow: 0 0 0 0.25rem rgba(46, 139, 87, 0.25);
+}
+
+.btnSuccess {
+    background-color: #004db9;
+    border-color: #004db9;
+    color: #FFFFFF;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+}
+
+.btnSuccess:hover {
+    background-color: #FFD700;
+    border-color: #FFD700;
+    color: #333333;
+}
+
+.footer {
+    background-color: #333333;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+}
