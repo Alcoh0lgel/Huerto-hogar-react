@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.perfilLayout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Montserrat", sans-serif;
+    background-color: #F7F7F7;
+}
+
+@media (min-width: 768px) {
+    .perfilLayout {
+        flex-direction: row;
+    }
+}
+
+.mainContent {
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+.mainTitle {
+    font-family: "Montserrat", sans-serif;
+    color: #333333;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.cardPerfil {
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.avatarAdmin {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #004db9;
+    margin-bottom: 1rem;
+}
+
+.infoLabel {
+    font-weight: 600;
+    color: #8B4513;
+}
+
+.infoValue {
+    color: #333333;
+}
