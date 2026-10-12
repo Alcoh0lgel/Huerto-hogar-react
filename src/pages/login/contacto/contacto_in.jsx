@@ -4,12 +4,10 @@ import logo from "../../../components/imagenes/HuertoHogar.png";
 import NavigationBarIn from '../../../components/navbar/navbarIn';
 import AppFooter from '../../../components/footer/footer';
 import App_alert from "../../../components/alerts/alertas";
-import AppFooter from "../../../components/footer/footer";
-import NavigationBarIn from "../../../components/navbar/navbarIn";
 
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
-// Validación declarada fuera del componente (patrón docente)
+// Función de validación declarada fuera del componente
 const validar = (datos) => {
   const errores = {};
 
@@ -96,14 +94,15 @@ export const Contacto = () => {
       <NavigationBarIn />
 
       <main className={styles.contenidoPrincipal}>
-        <div className={styles.contenedor}>
-          
-          {/* Logo Centrado */}
-          <img
-            src={logo}
-            alt="Logo Huerto Hogar"
-            className={styles.logoFormulario}
-          />
+        <section id="formularioContacto">
+          <div className={styles.contenedor}>
+            <div className={styles.logo}>
+              <img
+                src={logo}
+                alt="logo huerto hogar"
+                className={styles.logoFormulario}
+              />
+              <h2>Formulario de Contacto</h2>
 
               <App_alert
                 mostrarAlert={alerta.mostrar}
@@ -167,76 +166,9 @@ export const Contacto = () => {
                   Enviar Mensaje
                 </button>
               </div>
-          {/* Título en Café Tierra */}
-          <h2 className={styles.tituloFormulario}>Formulario de Contacto</h2>
-
-          {/* Alerta de Éxito */}
-          {mensajeExito && (
-            <div className="alert alert-success text-center mb-4 rounded-3" role="alert">
-              ¡Mensaje enviado con éxito! 🌿
             </div>
-          )}
-
-          {/* Formulario */}
-          <form>
-            {/* Campo Nombre Completo */}
-            <div className="form-floating mb-3">
-              <input
-                type="text"
-                className={`form-control ${styles.inputCustom}`}
-                id="contactoNombre"
-                name="nombre"
-                placeholder="Nombre Completo"
-                value={datos.nombre}
-                onChange={handleChange}
-              />
-              <label htmlFor="contactoNombre">Nombre Completo</label>
-              {errores.nombre && <div className={styles.textoError}>{errores.nombre}</div>}
-            </div>
-
-            {/* Campo Correo Electrónico */}
-            <div className="form-floating mb-3">
-              <input
-                type="email"
-                className={`form-control ${styles.inputCustom}`}
-                id="contactoCorreo"
-                name="correo"
-                placeholder="Correo Electrónico"
-                value={datos.correo}
-                onChange={handleChange}
-              />
-              <label htmlFor="contactoCorreo">Correo Electrónico</label>
-              {errores.correo && <div className={styles.textoError}>{errores.correo}</div>}
-            </div>
-
-            {/* Campo Mensaje */}
-            <div className="form-floating mb-3">
-              <textarea
-                className={`form-control ${styles.inputCustom}`}
-                id="contactoMensaje"
-                name="mensaje"
-                placeholder="Mensaje"
-                style={{ height: "130px" }}
-                value={datos.mensaje}
-                onChange={handleChange}
-              ></textarea>
-              <label htmlFor="contactoMensaje">Mensaje</label>
-              {errores.mensaje && <div className={styles.textoError}>{errores.mensaje}</div>}
-            </div>
-
-            {/* Botón Verde Centrado */}
-            <div className={styles.btnEnvio}>
-              <button
-                type="button"
-                className={styles.btnSubmit}
-                onClick={handleSubmit}
-              >
-                Enviar Mensaje
-              </button>
-            </div>
-          </form>
-
-        </div>
+          </div>
+        </section>
       </main>
 
       <AppFooter />
