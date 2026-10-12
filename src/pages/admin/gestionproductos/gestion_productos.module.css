@@ -6,8 +6,6 @@
     min-height: 100vh;
     font-family: "Montserrat", sans-serif;
     background-color: #F7F7F7;
-    background-image: url("/img/papelreciclado.png");
-    background-repeat: repeat;
 }
 
 @media (min-width: 768px) {
