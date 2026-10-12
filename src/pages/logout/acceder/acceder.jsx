@@ -1,15 +1,13 @@
 import { Link } from "react-router-dom";
 import styles from "./acceder.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
-import NavbarAdmin from "../../../components/navbar/navbaracceder";
+import NavbarAcceder from "../../../components/navbar/navbaracceder";
 
 export const Acceder = () => {
   return (
     <>
-      <NavbarAdmin/>
-      
+      <NavbarAcceder/>
 
-      
       <main className={styles.contenidoPrincipal}>
         <section id="formularioContacto">
           <div className={styles.contenedor}>
@@ -47,7 +45,7 @@ export const Acceder = () => {
                     Acceder
                   </Link>
                 </div>
-                <a href="#">Recuperar contraseña</a>
+                <Link to="#" className='text-reset text-decoration-underline'>Recuperar contraseña</Link>
               </div>
             </div>
           </div>
