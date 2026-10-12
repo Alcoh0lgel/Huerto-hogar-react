@@ -161,16 +161,14 @@ export default function GestionProductos() {
         setShowModal(false);
     };
 
-    // Filtros separados:
-    // 1. Productos normales (stock > 50) para la tabla principal
     const productosNormales = productos.filter(p => p.stock > 50);
-    // 2. Productos críticos (stock <= 50) para la tabla de alertas
     const productosCriticos = productos.filter(p => p.stock <= 50);
 
     return (
         <div className={styles.adminLayout}>
             <div className="d-flex flex-column flex-md-row flex-grow-1 w-100">
-                <AdminSidebar />
+                {/* Se pasa explícitamente el prop vistaActiva para que se marque en azul */}
+                <AdminSidebar vistaActiva="productos" />
 
                 <main className={styles.mainContent}>
                     <div className="d-flex justify-content-between align-items-center mb-4">
@@ -180,7 +178,7 @@ export default function GestionProductos() {
                         </button>
                     </div>
 
-                    {/* Tabla Principal (Solo muestra productos con stock > 50) */}
+                    {/* Tabla Principal */}
                     <div className="table-responsive mb-5">
                         <table className={`table table-striped align-middle ${styles.tableCustom}`}>
                             <thead className="table-dark">
@@ -231,7 +229,7 @@ export default function GestionProductos() {
                         </table>
                     </div>
 
-                    {/* Lista de Productos Críticos (Stock <= 50) */}
+                    {/* Lista de Productos Críticos */}
                     <div className="mt-4">
                         <h3 className={`mb-3 ${styles.mainTitle}`} style={{ fontSize: '1.25rem' }}>
                             ⚠️ Productos en Stock Crítico (≤ 50 unidades)
