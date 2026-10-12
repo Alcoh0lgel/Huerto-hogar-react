@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import RegionesComunas from '../../../data/regiones';
 import App_navbarOut from '../../../components/navbar/navbarout';
 import styles from './crearCuenta.module.css';
+import AppFooter from '../../../components/footer/footer'
 
 const KEY_STORAGE = 'clave_storage';
 
@@ -289,6 +290,7 @@ export const CrearCuenta = () => {
           </div>
         </section>
       </main>
+      <AppFooter/>
     </>
   );
 };

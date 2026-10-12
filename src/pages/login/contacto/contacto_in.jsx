@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./contacto_in.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
 import NavigationBarIn from '../../../components/navbar/navbarIn';
+import AppFooter from '../../../components/footer/footer'
 
 export const Contacto = () => {
   const [form, setForm] = useState({ nombre: "", correo: "", mensaje: "" });
@@ -80,6 +81,7 @@ export const Contacto = () => {
           </div>
         </section>
       </main>
+      <AppFooter/>
 
     </>
 
