@@ -284,7 +284,7 @@ export const CrearCuenta = () => {
                     Enviar
                   </button>
                 </div>
-                <Link to="/acceder">Iniciar sesión</Link>
+                <Link to="/acceder" className='text-reset text-decoration-underline'>Iniciar sesión</Link>
               </div>
             </div>
           </div>

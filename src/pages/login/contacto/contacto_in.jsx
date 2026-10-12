@@ -3,19 +3,36 @@ import { useState } from "react";
 import styles from "./contacto_in.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
 import NavigationBarIn from '../../../components/navbar/navbarIn';
-import AppFooter from '../../../components/footer/footer'
 
 export const Contacto = () => {
-  const [form, setForm] = useState({ nombre: "", correo: "", mensaje: "" });
+  const [datos, setDatos] = useState({
+    nombre: '',
+    correo: '',
+    mensaje: '',
+  });
+
+  const [errores, setErrores] = useState({});
+  const [mensajeExito, setMensajeExito] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setDatos({ ...datos, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Mensaje enviado:", form);
-    setForm({ nombre: "", correo: "", mensaje: "" });
+  const handleSubmit = () => {
+    const nuevosErrores = validar(datos);
+    setErrores(nuevosErrores);
+
+    if (Object.keys(nuevosErrores).length > 0) return;
+
+    console.log("Mensaje enviado:", datos);
+    setMensajeExito(true);
+    setDatos({ nombre: '', correo: '', mensaje: '' });
+    setErrores({});
+
+    setTimeout(() => {
+      setMensajeExito(false);
+    }, 3000);
   };
 
   return (
@@ -25,7 +42,7 @@ export const Contacto = () => {
       <main className={styles.contenidoPrincipal}>
         <section id="formularioContacto">
           <div className={styles.contenedor}>
-            <form className={styles.logo} onSubmit={handleSubmit}>
+            <div className={styles.logo}>
               <img
                 src={logo}
                 alt="logo huerto hogar"
@@ -33,19 +50,28 @@ export const Contacto = () => {
               />
               <h2>Formulario de Contacto</h2>
 
-              <div className="form-floating mb-4">
+              {mensajeExito && (
+                <div className="alert alert-success text-center mb-3" role="alert">
+                  ¡Mensaje enviado con éxito! 🌿
+                </div>
+              )}
+
+              {/* Nombre Completo */}
+              <div className="form-floating mb-3">
                 <input
                   type="text"
                   className="form-control"
                   id="contactoNombre"
                   name="nombre"
                   placeholder="Pepito Perez"
-                  value={form.nombre}
+                  value={datos.nombre}
                   onChange={handleChange}
                 />
                 <label htmlFor="contactoNombre">Nombre Completo</label>
+                <div className={styles.textoError}>{errores.nombre}</div>
               </div>
 
+              {/* Correo Electrónico */}
               <div className="form-floating mb-3">
                 <input
                   type="email"
@@ -53,38 +79,45 @@ export const Contacto = () => {
                   id="contactoCorreo"
                   name="correo"
                   placeholder="name@example.com"
-                  value={form.correo}
+                  value={datos.correo}
                   onChange={handleChange}
                 />
                 <label htmlFor="contactoCorreo">Correo Electrónico</label>
+                <div className={styles.textoError}>{errores.correo}</div>
               </div>
 
-              <div className="form-floating py-2">
+              {/* Mensaje */}
+              <div className="form-floating mb-3">
                 <textarea
                   className="form-control"
                   id="contactoMensaje"
                   name="mensaje"
                   placeholder="Escribe tu mensaje"
                   style={{ height: "100px" }}
-                  value={form.mensaje}
+                  value={datos.mensaje}
                   onChange={handleChange}
                 ></textarea>
                 <label htmlFor="contactoMensaje">Mensaje</label>
+                <div className={styles.textoError}>{errores.mensaje}</div>
               </div>
 
+              {/* Botón de Enviar */}
               <div className={styles.btnEnvio}>
-                <button type="submit" className="btn btn-success py-2">
+                <button
+                  type="button"
+                  className="btn btn-success py-2"
+                  onClick={handleSubmit}
+                >
                   Enviar Mensaje
                 </button>
               </div>
-            </form>
+
+            </div>
           </div>
         </section>
       </main>
-      <AppFooter/>
 
     </>
-
   );
 };
 
