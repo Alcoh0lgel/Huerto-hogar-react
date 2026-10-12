@@ -68,7 +68,7 @@ export const Menu = () => {
       <main className={styles.contenidoPrincipal}>
         
         {/* Portada de Presentación en 2 Columnas */}
-        <section className="container">
+        <section className="container mt-3">
           <div className={styles.tarjetaPresentacion}>
             <div className="row align-items-center g-4">
               

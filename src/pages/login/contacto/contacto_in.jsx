@@ -1,12 +1,12 @@
-
 import { useState } from "react";
 import styles from "./contacto_in.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
-import NavigationBarIn from '../../../components/navbar/navbarIn';
+import AppFooter from "../../../components/footer/footer";
+import NavigationBarIn from "../../../components/navbar/navbarIn";
 
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
-// Función de validación declarada fuera del componente
+// Validación declarada fuera del componente (patrón docente)
 const validar = (datos) => {
   const errores = {};
 
@@ -38,7 +38,6 @@ const validar = (datos) => {
 
   return errores;
 };
-import AppFooter from '../../../components/footer/footer'
 
 export const Contacto = () => {
   const [datos, setDatos] = useState({
@@ -76,83 +75,88 @@ export const Contacto = () => {
       <NavigationBarIn/>
 
       <main className={styles.contenidoPrincipal}>
-        <section id="formularioContacto">
-          <div className={styles.contenedor}>
-            <div className={styles.logo}>
-              <img
-                src={logo}
-                alt="logo huerto hogar"
-                className={styles.logoFormulario}
-              />
-              <h2>Formulario de Contacto</h2>
+        <div className={styles.contenedor}>
+          
+          {/* Logo Centrado */}
+          <img
+            src={logo}
+            alt="Logo Huerto Hogar"
+            className={styles.logoFormulario}
+          />
 
-              {mensajeExito && (
-                <div className="alert alert-success text-center mb-3" role="alert">
-                  ¡Mensaje enviado con éxito! 🌿
-                </div>
-              )}
+          {/* Título en Café Tierra */}
+          <h2 className={styles.tituloFormulario}>Formulario de Contacto</h2>
 
-              {/* Nombre Completo */}
-              <div className="form-floating mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="contactoNombre"
-                  name="nombre"
-                  placeholder="Pepito Perez"
-                  value={datos.nombre}
-                  onChange={handleChange}
-                />
-                <label htmlFor="contactoNombre">Nombre Completo</label>
-                <div className={styles.textoError}>{errores.nombre}</div>
-              </div>
-
-              {/* Correo Electrónico */}
-              <div className="form-floating mb-3">
-                <input
-                  type="email"
-                  className="form-control"
-                  id="contactoCorreo"
-                  name="correo"
-                  placeholder="name@example.com"
-                  value={datos.correo}
-                  onChange={handleChange}
-                />
-                <label htmlFor="contactoCorreo">Correo Electrónico</label>
-                <div className={styles.textoError}>{errores.correo}</div>
-              </div>
-
-              {/* Mensaje */}
-              <div className="form-floating mb-3">
-                <textarea
-                  className="form-control"
-                  id="contactoMensaje"
-                  name="mensaje"
-                  placeholder="Escribe tu mensaje"
-                  style={{ height: "100px" }}
-                  value={datos.mensaje}
-                  onChange={handleChange}
-                ></textarea>
-                <label htmlFor="contactoMensaje">Mensaje</label>
-                <div className={styles.textoError}>{errores.mensaje}</div>
-              </div>
-
-              {/* Botón de Enviar */}
-              <div className={styles.btnEnvio}>
-                <button
-                  type="button"
-                  className="btn btn-success py-2"
-                  onClick={handleSubmit}
-                >
-                  Enviar Mensaje
-                </button>
-              </div>
-
+          {/* Alerta de Éxito */}
+          {mensajeExito && (
+            <div className="alert alert-success text-center mb-4 rounded-3" role="alert">
+              ¡Mensaje enviado con éxito! 🌿
             </div>
-          </div>
-        </section>
+          )}
+
+          {/* Formulario */}
+          <form>
+            {/* Campo Nombre Completo */}
+            <div className="form-floating mb-3">
+              <input
+                type="text"
+                className={`form-control ${styles.inputCustom}`}
+                id="contactoNombre"
+                name="nombre"
+                placeholder="Nombre Completo"
+                value={datos.nombre}
+                onChange={handleChange}
+              />
+              <label htmlFor="contactoNombre">Nombre Completo</label>
+              {errores.nombre && <div className={styles.textoError}>{errores.nombre}</div>}
+            </div>
+
+            {/* Campo Correo Electrónico */}
+            <div className="form-floating mb-3">
+              <input
+                type="email"
+                className={`form-control ${styles.inputCustom}`}
+                id="contactoCorreo"
+                name="correo"
+                placeholder="Correo Electrónico"
+                value={datos.correo}
+                onChange={handleChange}
+              />
+              <label htmlFor="contactoCorreo">Correo Electrónico</label>
+              {errores.correo && <div className={styles.textoError}>{errores.correo}</div>}
+            </div>
+
+            {/* Campo Mensaje */}
+            <div className="form-floating mb-3">
+              <textarea
+                className={`form-control ${styles.inputCustom}`}
+                id="contactoMensaje"
+                name="mensaje"
+                placeholder="Mensaje"
+                style={{ height: "130px" }}
+                value={datos.mensaje}
+                onChange={handleChange}
+              ></textarea>
+              <label htmlFor="contactoMensaje">Mensaje</label>
+              {errores.mensaje && <div className={styles.textoError}>{errores.mensaje}</div>}
+            </div>
+
+            {/* Botón Verde Centrado */}
+            <div className={styles.btnEnvio}>
+              <button
+                type="button"
+                className={styles.btnSubmit}
+                onClick={handleSubmit}
+              >
+                Enviar Mensaje
+              </button>
+            </div>
+          </form>
+
+        </div>
       </main>
-      <AppFooter/>
+
+      <AppFooter />
     </>
   );
 };
