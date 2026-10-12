@@ -19,21 +19,21 @@ const validar = (datos) => {
   } else if (run.length < 7 || run.length > 9) {
     errores.run = 'El run debe tener entre 7 y 9 caracteres.';
   } else if (!/^[0-9]+[0-9K]$/.test(run)) {
-    errores.run = 'El run debe tener numeros y un digito verificador';
+    errores.run = 'El run debe tener números y un dígito verificador';
   }
 
   const nombre = datos.nombre.trim();
   if (nombre === '') {
     errores.nombre = 'El nombre es obligatorio';
   } else if (nombre.length > 50) {
-    errores.nombre = 'Maximo 50 caracteres.';
+    errores.nombre = 'Máximo 50 caracteres.';
   }
 
   const apellido = datos.apellido.trim();
   if (apellido === '') {
     errores.apellido = 'Los apellidos son obligatorios';
   } else if (apellido.length > 100) {
-    errores.apellido = 'Maximo 100 caracteres.';
+    errores.apellido = 'Máximo 100 caracteres.';
   }
 
   const correo = datos.correo.trim();
@@ -41,7 +41,7 @@ const validar = (datos) => {
   if (correo === '') {
     errores.correo = 'El correo es obligatorio.';
   } else if (correo.length > 100) {
-    errores.correo = 'Maximo 100 caracteres';
+    errores.correo = 'Máximo 100 caracteres';
   } else if (!DOMINIOS_PERMITIDOS.includes(dominio)) {
     errores.correo = 'Solo se permiten correos @duoc.cl, @profesor.duoc.cl, @gmail.com';
   }
@@ -55,9 +55,9 @@ const validar = (datos) => {
 
   const direccion = datos.direccion.trim();
   if (direccion === '') {
-    errores.direccion = 'La direccion es obligatoria';
+    errores.direccion = 'La dirección es obligatoria';
   } else if (direccion.length > 300) {
-    errores.direccion = 'El maximo de caracteres para la direccion son 300';
+    errores.direccion = 'El máximo de caracteres para la dirección son 300';
   }
 
   return errores;
@@ -166,7 +166,7 @@ export const CrearCuenta = () => {
               <div className="form-floating mb-2">
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${styles.inputCustom}`}
                   id="inputRun"
                   name="run"
                   placeholder="19011022k"
@@ -178,10 +178,10 @@ export const CrearCuenta = () => {
                 <div className={styles.textoError}>{errores.run}</div>
               </div>
 
-              <div className="form-floating mb-4">
+              <div className="form-floating mb-3">
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${styles.inputCustom}`}
                   id="inputNombre"
                   name="nombre"
                   placeholder="Pepito"
@@ -193,13 +193,13 @@ export const CrearCuenta = () => {
                 <div className={styles.textoError}>{errores.nombre}</div>
               </div>
 
-              <div className="form-floating mb-4">
+              <div className="form-floating mb-3">
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${styles.inputCustom}`}
                   id="inputApellido"
                   name="apellido"
-                  placeholder="Perez"
+                  placeholder="Pérez"
                   maxLength={100}
                   value={datos.apellido}
                   onChange={handleChange}
@@ -209,10 +209,10 @@ export const CrearCuenta = () => {
               </div>
 
               <p>Correo electrónico</p>
-              <div className="form-floating mb-4">
+              <div className="form-floating mb-3">
                 <input
                   type="email"
-                  className="form-control"
+                  className={`form-control ${styles.inputCustom}`}
                   id="inputCorreo"
                   name="correo"
                   placeholder="nombre@duocuc.cl"
@@ -228,7 +228,7 @@ export const CrearCuenta = () => {
               <div className="form-floating mb-3">
                 <input
                   type="password"
-                  className="form-control"
+                  className={`form-control ${styles.inputCustom}`}
                   id="inputpassword"
                   name="password"
                   placeholder="Contraseña"
@@ -239,31 +239,31 @@ export const CrearCuenta = () => {
                 <div className={styles.textoError}>{errores.password}</div>
               </div>
 
-              <p>Telefono</p>
+              <p>Teléfono</p>
               <div className="form-floating mb-3">
                 <input
                   type="tel"
-                  className="form-control"
+                  className={`form-control ${styles.inputCustom}`}
                   id="inputTelefono"
                   name="telefono"
                   placeholder="+56945678912"
                   value={datos.telefono}
                   onChange={handleChange}
                 />
-                <label htmlFor="inputTelefono">Telefono</label>
+                <label htmlFor="inputTelefono">Teléfono</label>
               </div>
 
-              <p>Ingresar Direccion</p>
-              <div className="row mb-4">
+              <p>Ingresar Dirección</p>
+              <div className="row g-2 mb-3">
                 <div className="col-md-6">
                   <select
-                    className="form-select"
+                    className={`form-select ${styles.inputCustom}`}
                     id="seleccionRegion"
                     name="region"
                     value={datos.region}
                     onChange={handleChange}
                   >
-                    <option value="" disabled>---Selecciona la Region</option>
+                    <option value="" disabled>---Selecciona la Región</option>
                     {RegionesComunas.map((item) => (
                       <option key={item.region} value={item.region}>
                         {item.region}
@@ -274,7 +274,7 @@ export const CrearCuenta = () => {
 
                 <div className="col-md-6">
                   <select
-                    className="form-select"
+                    className={`form-select ${styles.inputCustom}`}
                     id="seleccionComuna"
                     name="comuna"
                     value={datos.comuna}
@@ -293,7 +293,7 @@ export const CrearCuenta = () => {
               <div className="form-floating mb-3">
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${styles.inputCustom}`}
                   id="inputDireccion"
                   name="direccion"
                   placeholder="Calle Falsa 123"
@@ -301,7 +301,7 @@ export const CrearCuenta = () => {
                   value={datos.direccion}
                   onChange={handleChange}
                 />
-                <label htmlFor="inputDireccion">Direccion</label>
+                <label htmlFor="inputDireccion">Dirección</label>
                 <div className={styles.textoError}>{errores.direccion}</div>
               </div>
 
@@ -309,13 +309,13 @@ export const CrearCuenta = () => {
                 <div className={styles.btnEnvio}>
                   <button
                     type="button"
-                    className="btn btn-success py-2"
+                    className={styles.btnSubmit}
                     onClick={handleSubmit}
                   >
                     Enviar
                   </button>
                 </div>
-                <Link to="/acceder" className="text-reset text-decoration-underline">
+                <Link to="/acceder" className={styles.linkAcceder}>
                   Iniciar sesión
                 </Link>
               </div>

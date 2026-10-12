@@ -1,49 +1,117 @@
+/* Contenedor Principal Centrado con Fondo Crema Orgánico */
 .contenidoCrear {
-    min-height: 100vh;
+  background-color: #f8f6f0;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
 }
 
-.formularioCrear .contenedor {
-    font-family: "Montserrat", sans-serif;
-    text-align: center;
-    max-width: 500px;
-    margin: 50px auto 20px;
-    padding: 30px 15px;
+/* Sección y Contenedor del Formulario */
+.formularioCrear {
+  width: 100%;
 }
 
-.logo {
-    text-align: center;
+.contenedor {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
 }
 
+/* Logo de Huerto Hogar */
 .logoFormulario {
-    width: 100px;
-    margin-bottom: 10px;
+  max-width: 170px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 1rem;
 }
 
+/* Título Principal en Café Tierra */
+.contenedor h2 {
+  color: #8b4313;
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Subtítulos de Secciones (Datos personales, Correo, etc.) */
+.contenedor > p, 
+.logo > p {
+  color: #8b4313;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+/* Estilo para Inputs y Selects */
+.inputCustom {
+  background-color: #ffffff !important;
+  border: 1px solid #e0dcd3 !important;
+  border-radius: 8px !important;
+  color: #4a4a4a !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.inputCustom:focus {
+  border-color: #2d8a53 !important;
+  box-shadow: 0 0 0 0.2rem rgba(45, 138, 83, 0.15) !important;
+}
+
+/* Mensajes de Error de Validación */
 .textoError {
-    color: red;
-    font-size: 0.85rem;
-    text-align: center;
-    min-height: 1.2rem;
+  color: #dc3545;
+  font-size: 0.83rem;
+  font-weight: 500;
+  text-align: left;
+  margin-top: 0.25rem;
+  padding-left: 0.25rem;
 }
 
+/* Fila de Acciones (Botón Enviar e Iniciar Sesión) */
 .acceder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
 }
 
 .btnEnvio {
-    width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-.btnEnvio button {
-    width: 100%;
+.btnSubmit {
+  background-color: #2d8a53 !important;
+  border-color: #2d8a53 !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 0.6rem 2.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.textoError {
-  color: #dc3545; 
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  font-weight: 500;
+.btnSubmit:hover {
+  background-color: #236c41 !important;
+  border-color: #236c41 !important;
+  transform: translateY(-1px);
+}
+
+/* Enlace a Iniciar Sesión */
+.linkAcceder {
+  color: #4a4a4a;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.linkAcceder:hover {
+  color: #8b4313;
 }
