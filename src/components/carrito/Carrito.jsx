@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Offcanvas, Button, Card, Row, Col, Form, Modal } from 'react-bootstrap';
 import { CartContext } from '../../context/cartContext';
+import App_alert from '../alerts/alertas';
 
 function Carrito() {
   const {
@@ -13,7 +14,22 @@ function Carrito() {
 
   const [cupon, setCupon] = useState('');
   const [descuento, setDescuento] = useState(0);
-  const [mensajeCupon, setMensajeCupon] = useState('');
+
+  // Estado de alertas
+  const [alerta, setAlerta] = useState({
+    mostrar: false,
+    variant: 'success',
+    msg: '',
+  });
+
+  const cerrarAlert = () => setAlerta((prev) => ({ ...prev, mostrar: false }));
+
+  const mostrarAlerta = (variant, msg) => {
+    setAlerta({ mostrar: true, variant, msg });
+    setTimeout(() => {
+      setAlerta((prev) => ({ ...prev, mostrar: false }));
+    }, 3000);
+  };
 
   // Estados para la Pasarela de Pago
   const [showPagoModal, setShowPagoModal] = useState(false);
@@ -31,23 +47,52 @@ function Carrito() {
 
   // Lógica del Cupón
   const aplicarCupon = () => {
+    if (cupon.trim() === '') {
+      mostrarAlerta('warning', 'Escribe un cupón antes de aplicar.');
+      return;
+    }
+
     if (cupon.trim().toUpperCase() === 'HUERTOHOGAR10') {
       const desc = subtotal * 0.1; // 10% de descuento
       setDescuento(desc);
-      setMensajeCupon('¡Cupón del 10% aplicado!');
+      mostrarAlerta('success', '¡Cupón del 10% aplicado! 🌿');
     } else {
-      setMensajeCupon('Cupón inválido');
+      mostrarAlerta('danger', 'Cupón inválido.');
     }
+  };
+
+  // Eliminar producto con alerta
+  const handleEliminar = (index) => {
+    eliminarProductoCarrito(index);
+    mostrarAlerta('info', 'Producto eliminado del carrito.');
   };
 
   // Manejo de la Pasarela de Pago
   const handleAbrirPago = () => {
     handleCloseCarrito();
+    cerrarAlert();
     setShowPagoModal(true);
   };
 
   const handleProcesarPago = (e) => {
     e.preventDefault();
+
+    if (!/^\d{16}$/.test(datosPago.numeroTarjeta)) {
+      mostrarAlerta('danger', 'El número de tarjeta debe tener 16 dígitos.');
+      return;
+    }
+
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(datosPago.expiracion)) {
+      mostrarAlerta('danger', 'La fecha de expiración debe tener el formato MM/AA.');
+      return;
+    }
+
+    if (!/^\d{3}$/.test(datosPago.cvv)) {
+      mostrarAlerta('danger', 'El CVV debe tener 3 dígitos.');
+      return;
+    }
+
+    cerrarAlert();
     setPagoExitoso(true);
     setTimeout(() => {
       vaciarCarrito();
@@ -55,7 +100,12 @@ function Carrito() {
       setShowPagoModal(false);
       setDescuento(0);
       setCupon('');
-      setMensajeCupon('');
+      setDatosPago({
+        nombreTarhabiente: '',
+        numeroTarjeta: '',
+        expiracion: '',
+        cvv: '',
+      });
     }, 2500);
   };
 
@@ -67,7 +117,14 @@ function Carrito() {
           <Offcanvas.Title>Carrito de Compras 🛒</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body className="d-flex flex-column">
-          
+
+          <App_alert
+            mostrarAlert={alerta.mostrar}
+            cerrarAlert={cerrarAlert}
+            variant={alerta.variant}
+            msgAlert={alerta.msg}
+          />
+
           <div className="flex-grow-1 overflow-auto mb-3">
             {carrito.length === 0 ? (
               <p className="text-center fs-5 mt-4 text-muted">Tu carrito está vacío</p>
@@ -92,7 +149,7 @@ function Carrito() {
                         <Button
                           variant="outline-danger"
                           size="sm"
-                          onClick={() => eliminarProductoCarrito(index)}
+                          onClick={() => handleEliminar(index)}
                         >
                           Eliminar
                         </Button>
@@ -124,11 +181,6 @@ function Carrito() {
                     Aplicar
                   </Button>
                 </div>
-                {mensajeCupon && (
-                  <small className="d-block mt-1 text-center text-info">
-                    {mensajeCupon}
-                  </small>
-                )}
               </Form.Group>
 
               <div className="text-center mb-3">
@@ -166,6 +218,13 @@ function Carrito() {
             </div>
           ) : (
             <Form onSubmit={handleProcesarPago}>
+              <App_alert
+                mostrarAlert={alerta.mostrar}
+                cerrarAlert={cerrarAlert}
+                variant={alerta.variant}
+                msgAlert={alerta.msg}
+              />
+
               <div className="mb-3 text-center">
                 <span className="fs-5 fw-bold text-success">Total a pagar: ${total}</span>
               </div>
@@ -187,7 +246,7 @@ function Carrito() {
                 <Form.Label>Número de tarjeta</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="1234 5678 9012 3456"
+                  placeholder="1234567890123456"
                   maxLength="16"
                   required
                   value={datosPago.numeroTarjeta}

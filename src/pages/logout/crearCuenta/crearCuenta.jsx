@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import RegionesComunas from '../../../data/regiones';
 import NavbarAcceder from '../../../components/navbar/navbaracceder';
 import styles from './crearCuenta.module.css';
-import AppFooter from '../../../components/footer/footer'
+import AppFooter from '../../../components/footer/footer';
+import App_alert from '../../../components/alerts/alertas';
 
 const KEY_STORAGE = 'clave_storage';
 
@@ -78,6 +79,14 @@ export const CrearCuenta = () => {
   });
   const [errores, setErrores] = useState({});
 
+  const [alerta, setAlerta] = useState({
+    mostrar: false,
+    variant: 'success',
+    msg: '',
+  });
+
+  const cerrarAlert = () => setAlerta((prev) => ({ ...prev, mostrar: false }));
+
   const regionElegida = RegionesComunas.find((r) => r.region === datos.region);
   const comunas = regionElegida ? regionElegida.comunas : [];
 
@@ -95,7 +104,14 @@ export const CrearCuenta = () => {
     const nuevosErrores = validar(datos);
     setErrores(nuevosErrores);
 
-    if (Object.keys(nuevosErrores).length > 0) return;
+    if (Object.keys(nuevosErrores).length > 0) {
+      setAlerta({
+        mostrar: true,
+        variant: 'danger',
+        msg: 'Revisa los campos marcados antes de continuar.',
+      });
+      return;
+    }
 
     const nuevoUsuario = {
       run: datos.run.trim().toUpperCase(),
@@ -113,12 +129,20 @@ export const CrearCuenta = () => {
     lista.push(nuevoUsuario);
     localStorage.setItem(KEY_STORAGE, JSON.stringify(lista));
 
-    navigate('/');
+    setAlerta({
+      mostrar: true,
+      variant: 'success',
+      msg: '¡Cuenta creada con éxito! Redirigiendo... 🌱',
+    });
+
+    setTimeout(() => {
+      navigate('/');
+    }, 1500);
   };
 
   return (
     <>
-      <NavbarAcceder/>
+      <NavbarAcceder />
 
       <main className={styles.contenidoCrear}>
         <section className={styles.formularioCrear}>
@@ -130,6 +154,13 @@ export const CrearCuenta = () => {
                 className={styles.logoFormulario}
               />
               <h2>Crear Cuenta</h2>
+
+              <App_alert
+                mostrarAlert={alerta.mostrar}
+                cerrarAlert={cerrarAlert}
+                variant={alerta.variant}
+                msgAlert={alerta.msg}
+              />
 
               <p>Datos personales</p>
               <div className="form-floating mb-2">
@@ -284,13 +315,16 @@ export const CrearCuenta = () => {
                     Enviar
                   </button>
                 </div>
-                <Link to="/acceder" className='text-reset text-decoration-underline'>Iniciar sesión</Link>
+                <Link to="/acceder" className="text-reset text-decoration-underline">
+                  Iniciar sesión
+                </Link>
               </div>
             </div>
           </div>
         </section>
       </main>
-      <AppFooter/>
+
+      <AppFooter />
     </>
   );
 };

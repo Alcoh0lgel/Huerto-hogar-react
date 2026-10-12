@@ -2,7 +2,8 @@ import { useState } from "react";
 import styles from "./contacto_out.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
 import App_navbarOut from "../../../components/navbar/navbarout";
-import AppFooter from '../../../components/footer/footer'
+import AppFooter from '../../../components/footer/footer';
+import App_alert from "../../../components/alerts/alertas";
 
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
@@ -47,7 +48,14 @@ export const Contacto = () => {
   });
 
   const [errores, setErrores] = useState({});
-  const [mensajeExito, setMensajeExito] = useState(false);
+
+  const [alerta, setAlerta] = useState({
+    mostrar: false,
+    variant: 'success',
+    msg: '',
+  });
+
+  const cerrarAlert = () => setAlerta((prev) => ({ ...prev, mostrar: false }));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,15 +66,26 @@ export const Contacto = () => {
     const nuevosErrores = validar(datos);
     setErrores(nuevosErrores);
 
-    if (Object.keys(nuevosErrores).length > 0) return;
+    if (Object.keys(nuevosErrores).length > 0) {
+      setAlerta({
+        mostrar: true,
+        variant: 'danger',
+        msg: 'Revisa los campos marcados antes de enviar.',
+      });
+      return;
+    }
 
     console.log("Mensaje enviado:", datos);
-    setMensajeExito(true);
+    setAlerta({
+      mostrar: true,
+      variant: 'success',
+      msg: '¡Mensaje enviado con éxito! 🌿',
+    });
     setDatos({ nombre: '', correo: '', mensaje: '' });
     setErrores({});
 
     setTimeout(() => {
-      setMensajeExito(false);
+      setAlerta((prev) => ({ ...prev, mostrar: false }));
     }, 3000);
   };
 
@@ -85,11 +104,12 @@ export const Contacto = () => {
               />
               <h2>Formulario de Contacto</h2>
 
-              {mensajeExito && (
-                <div className="alert alert-success text-center mb-3" role="alert">
-                  ¡Mensaje enviado con éxito! 🌿
-                </div>
-              )}
+              <App_alert
+                mostrarAlert={alerta.mostrar}
+                cerrarAlert={cerrarAlert}
+                variant={alerta.variant}
+                msgAlert={alerta.msg}
+              />
 
               {/* Nombre Completo */}
               <div className="form-floating mb-3">
@@ -146,13 +166,12 @@ export const Contacto = () => {
                   Enviar Mensaje
                 </button>
               </div>
-
             </div>
           </div>
         </section>
       </main>
-      <AppFooter/>
 
+      <AppFooter />
     </>
   );
 };
