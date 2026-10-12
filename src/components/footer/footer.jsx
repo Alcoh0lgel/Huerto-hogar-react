@@ -9,8 +9,13 @@ function Footer() {
                     <div className="fw-semibold"> Huerto Hogar </div>
                     <div>🌱 Del campo a tu hogar 🏡</div>
                 </div>
-                <span> HuertoHogar@gmail.com</span>
 
+                <div className="text-center">
+                    <div className="fw-semibold">+56912345678</div>
+                    <div>HuertoHogar@gmail.com</div>
+                    
+                </div>
+                
                 <span>
                     &copy; {new Date().getFullYear()} 🌱 Huerto Hogar. Todos los derechos reservados 🌱.
                 </span>

@@ -1,6 +1,6 @@
 import React from 'react';
 import NavigationBar from '../../../components/navbar/navbarout';
-import Footer from '../../../components/footer/footer';
+import AppFooter from '../../../components/footer/footer';
 
 function Nosotros() {
   return (
@@ -60,10 +60,10 @@ function Nosotros() {
             </div>
           </div>
         </div>
-      <Footer/> 
 
       </section>
     </main>
+    <AppFooter/>
     </>
   );
 }

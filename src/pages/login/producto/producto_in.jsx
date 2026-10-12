@@ -1,7 +1,7 @@
 import NavigationBarIn from '../../../components/navbar/navbarIn';
 import { useContext } from 'react';
 import { CartContext } from '../../../context/cartContext';
-
+import AppFooter from '../../../components/footer/footer'
 const productosEstrellas = [
   {
     id: 1,
@@ -149,6 +149,7 @@ function Producto() {
         </section>
 
       </main>
+      <AppFooter/>
     </>
   );
 }

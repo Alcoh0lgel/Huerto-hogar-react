@@ -1,6 +1,6 @@
 import React from 'react';
 import NavigationBarIn from '../../../components/navbar/navbarIn';
-
+import AppFooter from '../../../components/footer/footer'
 function NosotrosIn() {
   return (
     <>
@@ -62,6 +62,7 @@ function NosotrosIn() {
 
       </section>
     </main>
+    <AppFooter/>
     </>
   );
 }

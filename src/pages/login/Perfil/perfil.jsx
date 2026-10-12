@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NavigationBarIn from '../../../components/navbar/navbarIn';
-
+import AppFooter from '../../../components/footer/footer'
 function Perfil() {
   
    //Nombre predeterminado
@@ -151,6 +151,7 @@ function Perfil() {
           </div>
         </section>
       </main>
+      <AppFooter/>
     </>
   );
 }
