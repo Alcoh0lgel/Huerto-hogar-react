@@ -14,7 +14,8 @@ function NavigationBarIn() {
   const { carrito, handleOpenCarrito } = useContext(CartContext);
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <section className='sticky-top'>
+      <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
         {/* Logo y Nombre (redirige al menú principal del usuario) */}
         <Navbar.Brand
@@ -84,6 +85,9 @@ function NavigationBarIn() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+
+    </section>
+    
   );
 }
 

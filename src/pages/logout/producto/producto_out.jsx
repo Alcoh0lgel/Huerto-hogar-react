@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import NavigationBar from '../../../components/navbar/navbarout'; // Ajusta la ruta a tu Navbar
 import { CartContext } from '../../../context/cartContext';
+import Footer from '../../../components/footer/footer';
 
 // Arreglo de productos reusado
 const productosEstrellas = [
@@ -146,8 +147,9 @@ function Producto() {
             ))}
           </div>
         </section>
-
+      
       </main>
+      <Footer/>
     </>
   );
 }
