@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import NavigationBar from '../../../components/navbar/navbarout';
+import AppFooter from '../../../components/footer/footer'
 import styles from './menu_out.module.css';
 
 const productosEstrellas = [
@@ -136,6 +137,7 @@ export const Menu = () => {
         </section>
 
       </main>
+    <AppFooter/>
     </>
   );
 };

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./acceder.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
+import NavbarAdmin from "../../../components/navbar/navbaracceder";
+import AppFooter from '../../../components/footer/footer'
 import NavbarAcceder from "../../../components/navbar/navbaracceder";
 
 export const Acceder = () => {
@@ -51,6 +53,7 @@ export const Acceder = () => {
           </div>
         </section>
       </main>
+      <AppFooter/>
       
     </>
 

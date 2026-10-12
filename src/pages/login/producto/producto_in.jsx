@@ -4,6 +4,7 @@ import { CartContext } from '../../../context/cartContext';
 import Footer from '../../../components/footer/footer';
 import styles from './producto_in.module.css';
 
+import AppFooter from '../../../components/footer/footer'
 const productosEstrellas = [
   {
     id: 1,
@@ -173,6 +174,7 @@ function Producto() {
       </main>
 
       <Footer />
+      <AppFooter/>
     </>
   );
 }

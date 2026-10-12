@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./contacto_out.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
 import App_navbarOut from "../../../components/navbar/navbarout";
+import AppFooter from '../../../components/footer/footer'
 
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
@@ -150,6 +151,8 @@ export const Contacto = () => {
           </div>
         </section>
       </main>
+      <AppFooter/>
+
     </>
   );
 };

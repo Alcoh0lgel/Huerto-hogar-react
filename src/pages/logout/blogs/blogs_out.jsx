@@ -1,5 +1,6 @@
 import React from 'react';
 import NavigationBar from '../../../components/navbar/navbarout';
+import AppFooter from '../../../components/footer/footer'
 
 function Blogs() {
   return (
@@ -61,6 +62,7 @@ function Blogs() {
 
       </section>
     </main>
+    <AppFooter/>
     </>
   );
 }
