@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import styles from "./acceder.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
-import App_navbarOut from "../../../components/navbar/navbarout"
+import NavbarAdmin from "../../../components/navbar/navbaracceder";
+
 export const Acceder = () => {
   return (
     <>
-      <App_navbarOut/>
+      <NavbarAdmin/>
       
 
       
