@@ -1,5 +1,5 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import styles from './menu_in.module.css';
 import NavigationBarIn from '../../../components/navbar/navbarIn';
 
 const productosEstrellas = [
@@ -53,7 +53,7 @@ const productosEstrellas = [
   }
 ];
 
-export const MenuIn = () => {
+export const Menu = () => {
   const navigate = useNavigate();
 
   const handleIrAProducto = (producto) => {
@@ -62,60 +62,82 @@ export const MenuIn = () => {
 
   return (
     <>
-    <NavigationBarIn/>
-    <main className="contenido-principal">
-      
-      {/* Portada de Presentación */}
-      <section className="container my-4">
-        <div className="contenedor-presentacion portada">
-          <div className="tarjeta-presentacion rounded-4 tarjeta-centro">
-            <div className="portada">
-              <img src="/img/verduras.jpg" className="rounded-4" alt="Verduras Huerto Hogar" />
-            </div>
-            <div className="texto-presentacion">
-              <h3>Tienda Huerto Hogar</h3>
-              <p>
-                HuertoHogar es una tienda online dedicada a llevar la frescura y calidad de los
-                productos del campo directamente a la puerta de nuestros clientes en Chile. Con más de 6 años de
-                experiencia, operamos en más de 9 puntos a lo largo del país, incluyendo ciudades clave como
-                Santiago, Puerto Montt, Villarrica, Nacimiento, Viña del Mar, Valparaíso, y Concepción. Nuestra
-                misión es conectar a las familias chilenas con el campo, promoviendo un estilo de vida saludable
-                y sostenible.
-              </p>
-              <span className="lema">🌱 Del campo al hogar 🏠</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <NavigationBarIn />
 
-      {/* Sección Productos Estrella */}
-      <section id="productosEstrella" className="container mt-1 py-4">
-        <h2 className="text-center mb-4">Nuestros Productos Estrella 🌟</h2>
+      <main className={styles.contenidoPrincipal}>
+        
+        {/* Portada de Presentación en 2 Columnas */}
+        <section className="container">
+          <div className={styles.tarjetaPresentacion}>
+            <div className="row align-items-center g-4">
+              
+              {/* Columna Izquierda: Imagen */}
+              <div className="col-12 col-md-5 text-center">
+                <img 
+                  src="/img/verduras.jpg" 
+                  className={styles.imagenPortada}
+                  alt="Verduras Huerto Hogar"
+                />
+              </div>
 
-        <div className="contenedor-cards row g-3">
-          {productosEstrellas.map((prod) => (
-            <div key={prod.id} className="col-12 col-sm-6 col-md-4 col-lg-2">
-              <div className="card h-100 d-flex flex-column text-center p-2">
-                <h5 className="titulo-producto">{prod.nombre}</h5>
-                <img src={prod.imagen} alt={prod.nombre} className="imagen-producto" />
-                <p className="precio-producto mt-auto mb-2">$ {prod.precio} x Kg</p>
-                <div className="contenedor-boton">
-                  <button 
-                    className="btn btn-outline-success"
-                    onClick={() => handleIrAProducto(prod)}
-                  >
-                    Ir a producto
-                  </button>
+              {/* Columna Derecha: Texto de la Tienda */}
+              <div className="col-12 col-md-7">
+                <h3 className={styles.tituloSeccion}>Tienda Huerto Hogar</h3>
+                <p className={styles.textoPresentacion}>
+                  HuertoHogar es una tienda online dedicada a llevar la frescura y calidad de los
+                  productos del campo directamente a la puerta de nuestros clientes en Chile. Con más de 6 años de
+                  experiencia, operamos en más de 9 puntos a lo largo del país, incluyendo ciudades clave como
+                  Santiago, Puerto Montt, Villarrica, Nacimiento, Viña del Mar, Valparaíso, y Concepción. Nuestra
+                  misión es conectar a las familias chilenas con el campo, promoviendo un estilo de vida saludable
+                  y sostenible.
+                </p>
+                <div>
+                  <span className={styles.lema}>🌱 Del campo al hogar 🏠</span>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
-    </main>
+            </div>
+          </div>
+        </section>
+
+        {/* Sección Productos Estrella */}
+        <section id="productosEstrella" className="container my-2">
+          <h2 className={styles.tituloEstrella}>Nuestros Productos Estrella 🌟</h2>
+
+          <div className="row g-3 justify-content-center">
+            {productosEstrellas.map((prod) => (
+              <div key={prod.id} className="col-12 col-sm-6 col-md-4 col-lg-2">
+                <div className={styles.cardProducto}>
+                  
+                  <div>
+                    <h6 className={styles.tituloProducto}>{prod.nombre}</h6>
+                    <img 
+                      src={prod.imagen} 
+                      alt={prod.nombre} 
+                      className={styles.imagenProducto} 
+                    />
+                    <p className={styles.precioProducto}>$ {prod.precio} x Kg</p>
+                  </div>
+
+                  <div>
+                    <button 
+                      type="button"
+                      className={styles.btnProducto}
+                      onClick={() => handleIrAProducto(prod)}
+                    >
+                      Ir a producto
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </main>
     </>
   );
 };
 
-export default MenuIn;
+export default Menu;

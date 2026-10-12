@@ -1,0 +1,135 @@
+
+.contenidoPrincipal {
+  background-color: #f8f6f0;
+  min-height: 100vh;
+  padding-top: 2rem;
+  padding-bottom: 3.5rem;
+}
+
+.contenedorPresentacion {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.tarjetaPresentacion {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 2rem; 
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  max-width: 900px; 
+  width: 100%;
+}
+
+.tarjetaIzquierda {
+  align-self: flex-start;
+}
+
+.tarjetaDerecha {
+  align-self: flex-end;
+}
+
+.imagenPresentacion {
+  width: 100%;
+  height: 190px; 
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.tituloPresentacion {
+  color: #8b4313; 
+  font-weight: 700;
+  font-size: 1.35rem; 
+  margin-bottom: 0.75rem;
+}
+
+.textoPresentacion {
+  color: #4a4a4a;
+  font-size: 0.98rem; 
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.lema {
+  color: #8b4313;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.tituloSeccion {
+  color: #8b4313;
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.cardProducto {
+  background-color: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cardProducto:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.imagenProducto {
+  width: 100%;
+  height: 100%;
+  min-height: 180px; 
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.detallesProducto {
+  padding: 1.25rem; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.tituloProducto {
+  color: #8b4313;
+  font-weight: 700;
+  font-size: 1.1rem; 
+  margin-bottom: 0.35rem;
+}
+
+.precioProducto {
+  color: #2d8a53; 
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.descripcionProducto {
+  color: #555555;
+  font-size: 0.88rem; 
+  line-height: 1.45;
+  margin-bottom: 1rem;
+}
+
+/* Botón Verde */
+.btnCarrito {
+  background-color: #2d8a53;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem; 
+  font-weight: 600;
+  font-size: 0.9rem;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btnCarrito:hover {
+  background-color: #236c41;
+}

@@ -1,6 +1,8 @@
+import React, { useContext } from 'react';
 import NavigationBarIn from '../../../components/navbar/navbarIn';
-import { useContext } from 'react';
 import { CartContext } from '../../../context/cartContext';
+import Footer from '../../../components/footer/footer';
+import styles from './producto_in.module.css';
 
 const productosEstrellas = [
   {
@@ -53,88 +55,109 @@ const productosEstrellas = [
   }
 ];
 
-
 function Producto() {
-
   const { agregarAlCarrito } = useContext(CartContext);
 
   return (
     <>
       <NavigationBarIn />
 
-      <main className="contenido-principal">
-        <section className="container my-4">
-          <div className="contenedor-presentacion">
+      <main className={styles.contenidoPrincipal}>
+        {/* Sección de Presentación Escalonada */}
+        <section className="container my-3">
+          <div className={styles.contenedorPresentacion}>
             
-            <div className="tarjeta-presentacion rounded-4 tarjeta-izquierda">
-              <div className="producto-presentacion">
-                <img src="/img/verduras.jpg" className="rounded-5" alt="verduras" />
-              </div>
-              <div className="texto-presentacion">
-                <h3>Frescura Real: Del Campo a tu Mesa</h3>
-                <p>
-                  En Huerto Hogar seleccionamos verduras de la más alta calidad, cosechadas en su punto óptimo de
-                  maduración. Sin largos períodos de almacenamiento ni intermediarios, garantizamos el sabor crujiente
-                  y los nutrientes intactos que solo la tierra chilena puede ofrecer.
-                </p>
-                <span className="lema">🌱 Del campo al hogar 🏠</span>
+            {/* Tarjeta Izquierda */}
+            <div className={`${styles.tarjetaPresentacion} ${styles.tarjetaIzquierda}`}>
+              <div className="row align-items-center g-3">
+                <div className="col-12 col-md-4 text-center">
+                  <img 
+                    src="/img/verduras.jpg" 
+                    className={styles.imagenPresentacion} 
+                    alt="Frescura Real" 
+                  />
+                </div>
+                <div className="col-12 col-md-8">
+                  <h3 className={styles.tituloPresentacion}>
+                    Frescura Real: Del Campo a tu Mesa
+                  </h3>
+                  <p className={styles.textoPresentacion}>
+                    En Huerto Hogar seleccionamos verduras de la más alta calidad, cosechadas en su punto óptimo de
+                    maduración. Sin largos períodos de almacenamiento ni intermediarios, garantizamos el sabor crujiente
+                    y los nutrientes intactos que solo la tierra chilena puede ofrecer.
+                  </p>
+                  <span className={styles.lema}>🌱 Del campo al hogar 🏠</span>
+                </div>
               </div>
             </div>
 
-            <div className="tarjeta-presentacion rounded-4 tarjeta-derecha">
-              <div className="producto-presentacion">
-                <img src="/img/verduras.jpg" className="rounded-5" alt="verduras" />
-              </div>
-              <div className="texto-presentacion">
-                <h3>Tu Cosecha del Día a un Clic</h3>
-                <p>
-                  Llevar alimentos saludables a tu cocina nunca fue tan sencillo. Contamos con una selección fresca de
-                  temporada lista para acompañar tus comidas de la semana. Explora nuestro catálogo a continuación,
-                  elige tus productos favoritos y recibe el campo en la puerta de tu hogar.
-                </p>
-                <span className="lema">🌱 Del campo al hogar 🏠</span>
+            {/* Tarjeta Derecha */}
+            <div className={`${styles.tarjetaPresentacion} ${styles.tarjetaDerecha}`}>
+              <div className="row align-items-center g-3">
+                <div className="col-12 col-md-4 text-center">
+                  <img 
+                    src="/img/verduras.jpg" 
+                    className={styles.imagenPresentacion} 
+                    alt="Tu Cosecha del Día" 
+                  />
+                </div>
+                <div className="col-12 col-md-8">
+                  <h3 className={styles.tituloPresentacion}>
+                    Tu Cosecha del Día a un Clic
+                  </h3>
+                  <p className={styles.textoPresentacion}>
+                    Llevar alimentos saludables a tu cocina nunca fue tan sencillo. Contamos con una selección fresca de
+                    temporada lista para acompañar tus comidas de la semana. Explora nuestro catálogo a continuación,
+                    elige tus productos favoritos y recibe el campo en la puerta de tu hogar.
+                  </p>
+                  <span className={styles.lema}>🌱 Del campo al hogar 🏠</span>
+                </div>
               </div>
             </div>
 
           </div>
         </section>
 
-        <section id="productosVenta" className="container mt-1 py-4">
+        {/* Listado de Productos */}
+        <section id="productosVenta" className="container my-4">
+          <h2 className={styles.tituloSeccion}>Nuestros Productos</h2>
 
-          <h2 className="text-center mb-4">Nuestros Productos</h2>
-
-          <div className="contenedor-cards row g-4">
+          <div className="row g-4">
             {productosEstrellas.map((item) => (
               <div key={item.id} className="col-12 col-md-6 col-lg-4">
-                <div className="card h-100 shadow-sm p-4">
-                  <div className="row g-2 h-100">
+                <div className={styles.cardProducto}>
+                  <div className="row g-0 h-100">
                     
-                    {/*Imagen*/}
-                    <div className="col-4 h-100">
+                    {/* Imagen a la izquierda */}
+                    <div className="col-4 p-2">
                       <img 
                         src={item.imagen} 
                         alt={item.nombre} 
-                        className="imgprod img-fluid rounded" 
-                        style={{ height: '100%', objectFit: 'cover' }} 
+                        className={styles.imagenProducto} 
                       />
                     </div>
 
-                    {/* Columna de Detalles y Botón*/}
+                    {/* Contenido a la derecha */}
                     <div className="col-8">
-                      <div className="card-body p-0 d-flex flex-column h-100">
-                        <h5 className="titulo-producto card-title fs-6 fw-bold mt-0 mb-1">
-                          {item.nombre}
-                        </h5>
-                        <p className="precio-producto card-text text-success fw-bold mb-1">
-                          $ {item.precio} x Kg
-                        </p>
-                        <p className="descripcion-producto card-text small mb-2">
-                          {item.descripcion}
-                        </p>
-                        <div className="mt-auto">
+                      <div className={styles.detallesProducto}>
+                        <div>
+                          <h5 className={styles.tituloProducto}>
+                            {item.nombre}
+                          </h5>
+                          <p className={styles.precioProducto}>
+                            $ {item.precio} x Kg
+                          </p>
+                          <p className={styles.descripcionProducto}>
+                            {item.descripcion}
+                          </p>
+                        </div>
+
+                        <div>
                           <button 
-                            className="btn btn-success btn-sm w-100"
-                            onClick={() => agregarAlCarrito(item)}>
+                            type="button"
+                            className={styles.btnCarrito}
+                            onClick={() => agregarAlCarrito(item)}
+                          >
                             Añadir al Carrito
                           </button>
                         </div>
@@ -147,8 +170,9 @@ function Producto() {
             ))}
           </div>
         </section>
-
       </main>
+
+      <Footer />
     </>
   );
 }

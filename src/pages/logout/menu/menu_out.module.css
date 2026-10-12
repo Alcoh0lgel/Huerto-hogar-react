@@ -1,0 +1,107 @@
+.contenidoPrincipal {
+  background-color: #f8f6f0;
+  min-height: 100vh;
+  padding-top: 1.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.tarjetaPresentacion {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  max-width: 950px;
+  margin: 0 auto 2rem auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.imagenPortada {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tituloSeccion {
+  color: #8b4313;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.textoPresentacion {
+  color: #555555;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.lema {
+  color: #8b4313;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.tituloEstrella {
+  color: #8b4313;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.cardProducto {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cardProducto:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.tituloProducto {
+  color: #8b4313;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.imagenProducto {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.precioProducto {
+  color: #6c757d;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.btnProducto {
+  background-color: #2d8a53;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 0.8rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btnProducto:hover {
+  background-color: #236c41;
+  color: #ffffff;
+}

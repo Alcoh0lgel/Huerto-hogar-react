@@ -4,6 +4,42 @@ import styles from "./contacto_in.module.css";
 import logo from "../../../components/imagenes/HuertoHogar.png";
 import NavigationBarIn from '../../../components/navbar/navbarIn';
 
+const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
+
+// Función de validación declarada fuera del componente
+const validar = (datos) => {
+  const errores = {};
+
+  const nombre = datos.nombre.trim();
+  if (nombre === '') {
+    errores.nombre = 'El nombre es obligatorio.';
+  } else if (nombre.length > 50) {
+    errores.nombre = 'Máximo 50 caracteres.';
+  }
+
+  const correo = datos.correo.trim();
+  const partesCorreo = correo.split('@');
+  const dominio = partesCorreo.length > 1 ? partesCorreo[1] : '';
+
+  if (correo === '') {
+    errores.correo = 'El correo es obligatorio.';
+  } else if (correo.length > 100) {
+    errores.correo = 'Máximo 100 caracteres.';
+  } else if (!DOMINIOS_PERMITIDOS.includes(dominio)) {
+    errores.correo = 'Solo se permiten correos @duoc.cl, @profesor.duoc.cl y @gmail.com';
+  }
+
+  const mensaje = datos.mensaje.trim();
+  if (mensaje === '') {
+    errores.mensaje = 'El mensaje es obligatorio.';
+  } else if (mensaje.length > 1000) {
+    errores.mensaje = 'El mensaje no debe superar los 1000 caracteres.';
+  }
+
+  return errores;
+};
+import AppFooter from '../../../components/footer/footer'
+
 export const Contacto = () => {
   const [datos, setDatos] = useState({
     nombre: '',
@@ -116,7 +152,7 @@ export const Contacto = () => {
           </div>
         </section>
       </main>
-
+      <AppFooter/>
     </>
   );
 };
