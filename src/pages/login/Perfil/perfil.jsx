@@ -4,25 +4,46 @@ import styles from './perfil.module.css';
 import NavigationBarIn from '../../../components/navbar/navbarIn';
 
 // Función de validación declarada fuera del componente
+const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
+
 const validarPerfil = (datos) => {
   const errores = {};
 
-  if (!datos.nombre.trim()) {
+  // Validar Nombre
+  const nombre = datos.nombre.trim();
+  if (nombre === '') {
     errores.nombre = 'El nombre es obligatorio.';
+  } else if (nombre.length > 50) {
+    errores.nombre = 'Máximo 50 caracteres.';
   }
 
-  if (!datos.correo.trim()) {
+  // Validar Correo
+  const correo = datos.correo.trim();
+  const partesCorreo = correo.split('@');
+  const dominio = partesCorreo.length > 1 ? partesCorreo[1] : '';
+
+  if (correo === '') {
     errores.correo = 'El correo es obligatorio.';
-  } else if (!/\S+@\S+\.\S+/.test(datos.correo)) {
-    errores.correo = 'Ingresa un correo electrónico válido.';
+  } else if (correo.length > 100) {
+    errores.correo = 'Máximo 100 caracteres.';
+  } else if (!DOMINIOS_PERMITIDOS.includes(dominio)) {
+    errores.correo = 'Solo se permiten correos @duoc.cl, @profesor.duoc.cl y @gmail.com';
   }
 
-  if (!datos.telefono.trim()) {
+  // Validar Teléfono
+  const telefono = datos.telefono.trim();
+  if (telefono === '') {
     errores.telefono = 'El teléfono es obligatorio.';
+  } else if (telefono.length > 15) {
+    errores.telefono = 'El teléfono no debe superar los 15 caracteres.';
   }
 
-  if (!datos.direccion.trim()) {
+  // Validar Dirección
+  const direccion = datos.direccion.trim();
+  if (direccion === '') {
     errores.direccion = 'La dirección es obligatoria.';
+  } else if (direccion.length > 200) {
+    errores.direccion = 'La dirección no debe superar los 200 caracteres.';
   }
 
   return errores;
@@ -58,7 +79,7 @@ export const Perfil = () => {
   
   const [datos, setDatos] = useState({
     nombre: 'Juan Pérez',
-    correo: 'juan.perez@email.com',
+    correo: 'juan.perez@gmail.com',
     telefono: '+56 9 1234 5678',
     rut: '19.876.543-2',
     direccion: 'Av. Siempre Viva 123, Dpto 402',
