@@ -14,7 +14,8 @@ function NavigationBar() {
   const { carrito, handleOpenCarrito } = useContext(CartContext);
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <section className='sticky-top'>
+      <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid>
         
         {/* Logo y Nombre */}
@@ -72,6 +73,9 @@ function NavigationBar() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+
+    </section>
+    
   );
 }
 

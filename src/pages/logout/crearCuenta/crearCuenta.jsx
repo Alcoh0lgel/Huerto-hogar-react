@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import RegionesComunas from '../../../data/regiones';
-import App_navbarOut from '../../../components/navbar/navbarout';
+import NavbarAcceder from '../../../components/navbar/navbaracceder';
 import styles from './crearCuenta.module.css';
 import AppFooter from '../../../components/footer/footer'
 
@@ -118,7 +118,7 @@ export const CrearCuenta = () => {
 
   return (
     <>
-      <App_navbarOut />
+      <NavbarAcceder/>
 
       <main className={styles.contenidoCrear}>
         <section className={styles.formularioCrear}>
