@@ -1,0 +1,46 @@
+.contenidoPrincipal {
+  background-color: #f8f6f0;
+  min-height: 100vh;
+}
+
+.tituloSeccion {
+  color: #8b4313;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.cardNoticia {
+  border: none !important;
+  border-radius: 18px !important;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cardNoticia:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
+}
+
+.imagenNoticia {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.tituloCard {
+  color: #8b4313;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.textoCard {
+  color: #4a4a4a;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}

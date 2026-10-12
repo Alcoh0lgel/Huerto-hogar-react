@@ -18,7 +18,7 @@ export default function AdminSidebar({ vistaActiva }) {
                         className={`nav-link w-100 text-start border ${vistaActiva === 'productos' ? 'active border-primary shadow-sm' : 'border-transparent'}`}
                         style={{ fontWeight: vistaActiva === 'productos' ? '600' : '500', textDecoration: 'none' }}
                     >
-                        📦 Productos
+                        Productos
                     </Link>
                 </li>
                 <li className="nav-item mb-1">
@@ -28,7 +28,7 @@ export default function AdminSidebar({ vistaActiva }) {
                         className={`nav-link w-100 text-start border ${vistaActiva === 'boletas' ? 'active border-primary shadow-sm' : 'border-transparent'}`}
                         style={{ fontWeight: vistaActiva === 'boletas' ? '600' : '500', textDecoration: 'none' }}
                     >
-                        🧾 Boletas de Compra
+                        Boletas de Compra
                     </Link>
                 </li>
                 <li className="nav-item mb-1">
@@ -39,6 +39,16 @@ export default function AdminSidebar({ vistaActiva }) {
                         style={{ fontWeight: vistaActiva === 'reportes' ? '600' : '500', textDecoration: 'none' }}
                     >
                         Reportes
+                    </Link>
+                </li>
+                <li className="nav-item mb-1">
+                    <Link 
+                        to="/admin/usuarios" 
+                        state={{ seccion: 'usuarios' }} // Opcional: si prefieres manejarlo por estado de ruta
+                        className={`nav-link w-100 text-start border ${vistaActiva === 'usuarios' ? 'active border-primary shadow-sm' : 'border-transparent'}`}
+                        style={{ fontWeight: vistaActiva === 'Usuarios' ? '600' : '500', textDecoration: 'none' }}
+                    >
+                        Usuarios
                     </Link>
                 </li>
             </ul>

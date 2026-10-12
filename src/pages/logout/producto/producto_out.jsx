@@ -64,7 +64,7 @@ function Producto() {
 
       <main className={styles.contenidoPrincipal}>
         {/* Sección de Presentación Escalonada */}
-        <section className="container my-3">
+        <section className="container my-3 mt-3">
           <div className={styles.contenedorPresentacion}>
             
             {/* Tarjeta Izquierda */}

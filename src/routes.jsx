@@ -24,6 +24,7 @@ import MenuAdmin from './pages/admin/panel/menu_admin';
 import GestionProductos from './pages/admin/gestionproductos/gestion_productos';
 import BoletasAdmin from './pages/admin/boletas/boletas';
 import ReportesAdmin from './pages/admin/reportes/reportes';
+import GestionUsuarios from './pages/admin/gestionusuarios/gestion_usuarios';
 
 export const routes = createBrowserRouter([
     //primero las publicas para no confundirnos
@@ -99,5 +100,8 @@ export const routes = createBrowserRouter([
     },{
         path:'/admin/reportes',
         element:<ReportesAdmin/>
+    },{
+        path:'/admin/usuarios',
+        element:<GestionUsuarios/>
     }
 ]);
