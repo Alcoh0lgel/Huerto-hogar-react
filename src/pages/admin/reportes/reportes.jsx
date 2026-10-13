@@ -2,7 +2,6 @@ import React from 'react';
 import AdminSidebar from '../../../components/sidebar/sidebaradmin';
 import styles from './reportes.module.css';
 
-// Datos de ejemplo basados en las boletas registradas
 const resumenVentasData = {
     totalVentas: 35900,
     totalBoletas: 5,

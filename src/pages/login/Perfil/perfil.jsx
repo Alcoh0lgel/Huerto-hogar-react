@@ -9,7 +9,6 @@ const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 const validarPerfil = (datos) => {
   const errores = {};
 
-  // Validar Nombre
   const nombre = datos.nombre.trim();
   if (nombre === '') {
     errores.nombre = 'El nombre es obligatorio.';
@@ -17,7 +16,6 @@ const validarPerfil = (datos) => {
     errores.nombre = 'Máximo 50 caracteres.';
   }
 
-  // Validar Correo
   const correo = datos.correo.trim();
   const partesCorreo = correo.split('@');
   const dominio = partesCorreo.length > 1 ? partesCorreo[1] : '';
@@ -30,7 +28,6 @@ const validarPerfil = (datos) => {
     errores.correo = 'Solo se permiten correos @duoc.cl, @profesor.duoc.cl y @gmail.com';
   }
 
-  // Validar Teléfono
   const telefono = datos.telefono.trim();
   if (telefono === '') {
     errores.telefono = 'El teléfono es obligatorio.';
@@ -38,7 +35,6 @@ const validarPerfil = (datos) => {
     errores.telefono = 'El teléfono no debe superar los 15 caracteres.';
   }
 
-  // Validar Dirección
   const direccion = datos.direccion.trim();
   if (direccion === '') {
     errores.direccion = 'La dirección es obligatoria.';
@@ -49,7 +45,6 @@ const validarPerfil = (datos) => {
   return errores;
 };
 
-// Historial de compras ficticio para darle complejidad
 const historialPedidos = [
   {
     id: "HH-8492",
@@ -75,7 +70,7 @@ const historialPedidos = [
 ];
 
 export const Perfil = () => {
-  const [pestaña, setPestaña] = useState('personal'); // 'personal', 'direccion', 'pedidos', 'seguridad'
+  const [pestaña, setPestaña] = useState('personal');
   
   const [datos, setDatos] = useState({
     nombre: 'Juan Pérez',
@@ -91,7 +86,6 @@ export const Perfil = () => {
   const [errores, setErrores] = useState({});
   const [mensajeExito, setMensajeExito] = useState(false);
 
-  // Cargar datos guardados previamente en localStorage
   useEffect(() => {
     const perfilGuardado = localStorage.getItem('perfilHuertoHogar');
     if (perfilGuardado) {
@@ -111,7 +105,6 @@ export const Perfil = () => {
 
     if (Object.keys(nuevosErrores).length > 0) return;
 
-    // Guardar en localStorage
     localStorage.setItem('perfilHuertoHogar', JSON.stringify(datos));
     
     setMensajeExito(true);
@@ -120,7 +113,6 @@ export const Perfil = () => {
     }, 3000);
   };
 
-  // Obtener iniciales para el Avatar
   const obtenerIniciales = (nombre) => {
     return nombre
       .split(' ')

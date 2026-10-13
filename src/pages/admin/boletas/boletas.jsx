@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AdminSidebar from '../../../components/sidebar/sidebaradmin';
-import ModalBoletas from '../../../components/modal/modalboletas'; // Ajusta la ruta según tu estructura
+import ModalBoletas from '../../../components/modal/modalboletas';
 import styles from './boletas.module.css';
 
 const boletasPredefinidas = [

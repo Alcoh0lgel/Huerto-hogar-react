@@ -7,7 +7,6 @@ import App_alert from "../../../components/alerts/alertas";
 
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
-// Función de validación declarada fuera del componente
 const validar = (datos) => {
   const errores = {};
 

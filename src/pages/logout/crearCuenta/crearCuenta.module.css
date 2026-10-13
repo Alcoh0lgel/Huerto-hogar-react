@@ -1,14 +1,14 @@
-/* Contenedor Principal Centrado con Fondo Crema Orgánico */
+
 .contenidoCrear {
   background-color: #f8f6f0;
-  min-height: 90vh;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 3rem 1rem;
 }
 
-/* Sección y Contenedor del Formulario */
+
 .formularioCrear {
   width: 100%;
 }
@@ -20,7 +20,6 @@
   text-align: center;
 }
 
-/* Logo de Huerto Hogar */
 .logoFormulario {
   max-width: 170px;
   height: auto;
@@ -28,7 +27,6 @@
   margin-bottom: 1rem;
 }
 
-/* Título Principal en Café Tierra */
 .contenedor h2 {
   color: #8b4313;
   font-weight: 700;
@@ -36,7 +34,6 @@
   margin-bottom: 0.5rem;
 }
 
-/* Subtítulos de Secciones (Datos personales, Correo, etc.) */
 .contenedor > p, 
 .logo > p {
   color: #8b4313;
@@ -47,7 +44,6 @@
   text-align: center;
 }
 
-/* Estilo para Inputs y Selects */
 .inputCustom {
   background-color: #ffffff !important;
   border: 1px solid #e0dcd3 !important;
@@ -61,7 +57,6 @@
   box-shadow: 0 0 0 0.2rem rgba(45, 138, 83, 0.15) !important;
 }
 
-/* Mensajes de Error de Validación */
 .textoError {
   color: #dc3545;
   font-size: 0.83rem;
@@ -71,7 +66,6 @@
   padding-left: 0.25rem;
 }
 
-/* Fila de Acciones (Botón Enviar e Iniciar Sesión) */
 .acceder {
   display: flex;
   flex-direction: column;
@@ -104,7 +98,6 @@
   transform: translateY(-1px);
 }
 
-/* Enlace a Iniciar Sesión */
 .linkAcceder {
   color: #4a4a4a;
   font-size: 0.9rem;

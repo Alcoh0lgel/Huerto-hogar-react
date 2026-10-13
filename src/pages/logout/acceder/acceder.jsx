@@ -7,7 +7,6 @@ import styles from './acceder.module.css';
 
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
-// Función de validación externa
 const validar = (datos) => {
   const errores = {};
 
@@ -51,7 +50,6 @@ export const Acceder = () => {
 
     if (Object.keys(nuevosErrores).length > 0) return;
 
-    // Proceso de inicio de sesión
     console.log("Inicio de sesión exitoso:", datos);
     navigate('/login/menu');
   };

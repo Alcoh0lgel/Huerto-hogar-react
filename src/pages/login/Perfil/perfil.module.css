@@ -1,12 +1,11 @@
-/* Contenedor Principal */
+
 .contenidoPrincipal {
   background-color: #f8f6f0;
-  min-height: 88vh;
+  flex: 1;
   padding-top: 2.5rem;
   padding-bottom: 4rem;
 }
 
-/* Título de la Página */
 .tituloSeccion {
   color: #8b4313;
   font-weight: 700;
@@ -14,7 +13,6 @@
   margin-bottom: 2rem;
 }
 
-/* Tarjetas Principales Blancas */
 .tarjetaBlanca {
   background-color: #ffffff;
   border-radius: 18px;
@@ -23,7 +21,6 @@
   border: none;
 }
 
-/* --- SIDEBAR DE USUARIO --- */
 .avatarBox {
   width: 90px;
   height: 90px;
@@ -63,7 +60,6 @@
   margin-bottom: 1.5rem;
 }
 
-/* Menú de Pestañas */
 .menuNavegacion {
   display: flex;
   flex-direction: column;
@@ -100,7 +96,6 @@
   background-color: #236c41;
 }
 
-/* --- FORMULARIOS --- */
 .tituloFormulario {
   color: #8b4313;
   font-weight: 700;
@@ -146,7 +141,6 @@
   background-color: #236c41;
 }
 
-/* --- HISTORIAL DE PEDIDOS --- */
 .itemPedido {
   border: 1px solid #e0dcd3;
   border-radius: 12px;

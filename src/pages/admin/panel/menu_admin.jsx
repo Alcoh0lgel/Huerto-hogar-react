@@ -3,7 +3,7 @@ import AdminSidebar from '../../../components/sidebar/sidebaradmin';
 import styles from './menu_admin.module.css';
 
 export default function AdminPerfil() {
-    // Datos simulados del administrador
+
     const adminData = {
         nombre: "Administrador Principal",
         email: "admin@huertohogar.cl",

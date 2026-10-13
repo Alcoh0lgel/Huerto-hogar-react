@@ -45,6 +45,7 @@ function NavigationBar() {
               <Nav.Link as={Link} to="/contacto" className={styles.navLink}>
                 Contacto
               </Nav.Link>
+              
 
             </Nav>
 
