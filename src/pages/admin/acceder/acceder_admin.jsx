@@ -3,20 +3,55 @@ import { useNavigate } from 'react-router-dom';
 import NavigationBar from '../../../components/navbar/navbaraccederadmin';
 import styles from './acceder_admin.module.css';
 
+const DOMINIOS_PERMITIDOS = ['admin.cl', 'huerthogar.cl'];
+
+const validar = (datos) => {
+  const errores = {};
+
+  const correo = datos.correo.trim();
+  const partesCorreo = correo.split('@');
+  const dominio = partesCorreo.length > 1 ? partesCorreo[1] : '';
+
+  if (correo === '') {
+    errores.correo = 'El correo es obligatorio.';
+  } else if (!DOMINIOS_PERMITIDOS.includes(dominio)) {
+    errores.correo = 'Solo se permiten correos @admin.cl, @huerthogar.cl';
+  }
+
+  const password = datos.password.trim();
+  if (password === '') {
+    errores.password = 'La contraseña es obligatoria.';
+  } else if (password.length < 4 || password.length > 10) {
+    errores.password = 'La contraseña debe tener entre 4 y 10 caracteres.';
+  }
+
+  return errores;
+};
+
 export default function LoginAdmin({ onLoginSuccess }) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [datos, setDatos] = useState({
+        correo: '',
+        password: ''
+    });
+    const [errores, setErrores] = useState({});
     const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setDatos({
+            ...datos,
+            [name]: value
+        });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (email && password) {
-            if (onLoginSuccess) onLoginSuccess();
-            navigate('/admin/panel');
-        }
-    };
+        const nuevosErrores = validar(datos);
+        setErrores(nuevosErrores);
 
-    const handleAccederClick = () => {
+        if (Object.keys(nuevosErrores).length > 0) return;
+
+        if (onLoginSuccess) onLoginSuccess();
         navigate('/admin/panel');
     };
 
@@ -33,16 +68,17 @@ export default function LoginAdmin({ onLoginSuccess }) {
 
                         <form onSubmit={handleSubmit} className="text-start">
                             <div className="mb-3">
-                                <label htmlFor="email" className={`form-label small mb-1 ${styles.formLabel}`}>Correo Electrónico</label>
+                                <label htmlFor="correo" className={`form-label small mb-1 ${styles.formLabel}`}>Correo Electrónico</label>
                                 <input 
                                     type="email" 
-                                    id="email" 
+                                    id="correo" 
+                                    name="correo"
                                     className={`form-control ${styles.formControl}`} 
                                     placeholder="name@example.com" 
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required 
+                                    value={datos.correo}
+                                    onChange={handleChange}
                                 />
+                                {errores.correo && <div className="text-danger small mt-1">{errores.correo}</div>}
                             </div>
 
                             <div className="mb-3">
@@ -50,20 +86,20 @@ export default function LoginAdmin({ onLoginSuccess }) {
                                 <input 
                                     type="password" 
                                     id="password" 
+                                    name="password"
                                     className={`form-control ${styles.formControl}`} 
                                     placeholder="*********" 
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required 
+                                    value={datos.password}
+                                    onChange={handleChange}
                                 />
+                                {errores.password && <div className="text-danger small mt-1">{errores.password}</div>}
                             </div>
 
                             <div className="acceder">
                                 <div className="btn-envio d-grid mb-2">
                                     <button 
-                                        type="button" 
+                                        type="submit" 
                                         className={`btn ${styles.btnSuccess}`}
-                                        onClick={handleAccederClick}
                                     >
                                         Acceder
                                     </button>
