@@ -1,5 +1,67 @@
+/* Contenedor principal con borde café superior y fondo crema */
+.customNavbar {
+  background-color: #f8f6f0 !important;
+  border-top: 4px solid #3d2314;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+/* Logo de Huerto Hogar */
 .logoNavbar {
-  height: 70px;
+  height: 42px;
   width: auto;
   object-fit: contain;
+}
+
+/* Texto de la Marca */
+.brandText {
+  color: #8b4313 !important;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* Enlaces de navegación */
+.navLink {
+  color: #8b4313 !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: #2d8a53 !important;
+}
+
+/* Botón Ver Carrito en Verde Orgánico */
+.btnCarrito {
+  background-color: #2d8a53 !important;
+  border-color: #2d8a53 !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 0.45rem 1.1rem !important;
+  font-size: 0.9rem !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background-color 0.2s ease !important;
+}
+
+.btnCarrito:hover {
+  background-color: #236c41 !important;
+  border-color: #236c41 !important;
+}
+
+/* Enlaces de Autenticación (Acceder, Crear cuenta, Salir) */
+.authLink {
+  color: #8b4313 !important;
+  font-weight: 600;
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.authLink:hover {
+  color: #2d8a53 !important;
 }
