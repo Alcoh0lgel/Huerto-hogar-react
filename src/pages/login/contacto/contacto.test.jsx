@@ -1,7 +1,12 @@
 import { fireEvent,render,screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { expect,test } from "vitest";
+import { expect,test,vi } from "vitest";
 import Contacto from "./contacto_in";
+
+vi.mock("../../../components/navbar/navbarIn", () => ({
+    default: () => null,
+}));
+
 
 test('Probar boton enviar', () => { 
     render(
