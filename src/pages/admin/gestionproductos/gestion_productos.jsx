@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import styles from './gestion_productos.module.css';
 import AdminSidebar from '../../../components/sidebar/sidebaradmin';
 import ProductoModal from '../../../components/modal/modalcrudproductos';
@@ -55,6 +54,47 @@ const productosEstrellaIniciales = [
     }
 ];
 
+// Función de validación adaptada al estilo solicitado
+const validarProducto = (datos, productosExistentes, editandoId) => {
+    const errores = {};
+
+    const idStr = String(datos.id).trim();
+    const idNum = parseInt(datos.id);
+    if (idStr === '') {
+        errores.id = 'El ID es obligatorio.';
+    } else if (isNaN(idNum) || idNum <= 0) {
+        errores.id = 'El ID debe ser un número mayor a 0.';
+    } else if (editandoId === null && productosExistentes.some(p => p.id === idNum)) {
+        errores.id = 'El ID ya existe. Ingrese un ID único.';
+    }
+
+    const nombre = datos.nombre.trim();
+    if (nombre === '') {
+        errores.nombre = 'El nombre es obligatorio.';
+    } else if (nombre.length > 100) {
+        errores.nombre = 'Máximo 100 caracteres.';
+    }
+
+    const precioNum = parseFloat(datos.precio);
+    if (datos.precio === '' || isNaN(precioNum) || precioNum < 0) {
+        errores.precio = 'El precio debe ser válido y no negativo.';
+    }
+
+    const stockNum = parseInt(datos.stock);
+    if (datos.stock === '' || isNaN(stockNum) || stockNum < 0) {
+        errores.stock = 'El stock debe ser un número entero no negativo.';
+    }
+
+    const descripcion = datos.descripcion.trim();
+    if (descripcion === '') {
+        errores.descripcion = 'La descripción es obligatoria.';
+    } else if (descripcion.length > 500) {
+        errores.descripcion = 'La descripción no debe superar los 500 caracteres.';
+    }
+
+    return errores;
+};
+
 export default function GestionProductos() {
     const [productos, setProductos] = useState(() => {
         let guardados = localStorage.getItem("productosEstrellas");
@@ -81,20 +121,27 @@ export default function GestionProductos() {
         descripcion: ''
     });
 
+    const [errores, setErrores] = useState({});
+    const [alerta, setAlerta] = useState({
+        mostrar: false,
+        variant: 'success',
+        msg: '',
+    });
+
     useEffect(() => {
         localStorage.setItem("productosEstrellas", JSON.stringify(productos));
     }, [productos]);
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     const abrirModalNuevoProducto = () => {
         setEditandoId(null);
         setFormData({ id: '', nombre: '', imagen: '', precio: '', stock: '', descripcion: '' });
+        setErrores({});
+        setAlerta({ mostrar: false, variant: 'success', msg: '' });
         setShowModal(true);
     };
 
@@ -111,6 +158,8 @@ export default function GestionProductos() {
             stock: producto.stock,
             descripcion: producto.descripcion || ''
         });
+        setErrores({});
+        setAlerta({ mostrar: false, variant: 'success', msg: '' });
         setShowModal(true);
     };
 
@@ -123,6 +172,18 @@ export default function GestionProductos() {
 
     const guardarProducto = (gp) => {
         gp.preventDefault();
+        const nuevosErrores = validarProducto(formData, productos, editandoId);
+        setErrores(nuevosErrores);
+
+        if (Object.keys(nuevosErrores).length > 0) {
+            setAlerta({
+                mostrar: true,
+                variant: 'danger',
+                msg: 'Revisa los campos marcados antes de guardar.',
+            });
+            return;
+        }
+
         const idNum = parseInt(formData.id);
         const precioNum = parseFloat(formData.precio);
         const stockNum = parseInt(formData.stock);
@@ -143,10 +204,6 @@ export default function GestionProductos() {
                 return p;
             });
         } else {
-            if (nuevosProductos.some(p => p.id === idNum)) {
-                alert("El Id ya existe. Ingrese un ID unico");
-                return;
-            }
             nuevosProductos.push({
                 id: idNum, 
                 nombre: formData.nombre.trim(), 
@@ -158,7 +215,16 @@ export default function GestionProductos() {
         }
 
         setProductos(nuevosProductos);
-        setShowModal(false);
+        setAlerta({
+            mostrar: true,
+            variant: 'success',
+            msg: '¡Producto guardado con éxito! 🌿',
+        });
+
+        setTimeout(() => {
+            setShowModal(false);
+            setAlerta((prev) => ({ ...prev, mostrar: false }));
+        }, 1500);
     };
 
     const productosNormales = productos.filter(p => p.stock > 50);
@@ -167,7 +233,6 @@ export default function GestionProductos() {
     return (
         <div className={styles.adminLayout}>
             <div className="d-flex flex-column flex-md-row flex-grow-1 w-100">
-                {/* Se pasa explícitamente el prop vistaActiva para que se marque en azul */}
                 <AdminSidebar vistaActiva="productos" />
 
                 <main className={styles.mainContent}>
@@ -178,7 +243,6 @@ export default function GestionProductos() {
                         </button>
                     </div>
 
-                    {/* Tabla Principal */}
                     <div className="table-responsive mb-5">
                         <table className={`table table-striped align-middle ${styles.tableCustom}`}>
                             <thead className="table-dark">
@@ -191,8 +255,7 @@ export default function GestionProductos() {
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-
-                            <tbody id="tablaProductosAdmin">
+                            <tbody>
                                 {productosNormales.length === 0 ? (
                                     <tr>
                                         <td colSpan="6" className="text-center text-muted py-3">
@@ -214,9 +277,7 @@ export default function GestionProductos() {
                                             <td>{producto.nombre}</td>
                                             <td>{producto.precio.toLocaleString("cl-CL")}</td>
                                             <td>
-                                                <span className="badge bg-success">
-                                                    {producto.stock} un.
-                                                </span>
+                                                <span className="badge bg-success">{producto.stock} un.</span>
                                             </td>
                                             <td>
                                                 <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarProducto(producto.id)}>Editar</button>
@@ -229,7 +290,7 @@ export default function GestionProductos() {
                         </table>
                     </div>
 
-                    {/* Lista de Productos Críticos */}
+                    {/* Productos críticos */}
                     <div className="mt-4">
                         <h3 className={`mb-3 ${styles.mainTitle}`} style={{ fontSize: '1.25rem' }}>
                             ⚠️ Productos en Stock Crítico (≤ 50 unidades)
@@ -262,17 +323,11 @@ export default function GestionProductos() {
                                                 </td>
                                                 <td>{producto.nombre}</td>
                                                 <td>
-                                                    <span className="badge bg-danger">
-                                                        {producto.stock} un.
-                                                    </span>
+                                                    <span className="badge bg-danger">{producto.stock} un.</span>
                                                 </td>
                                                 <td>
-                                                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarProducto(producto.id)}>
-                                                        Gestionar Stock
-                                                    </button>
-                                                    <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarProducto(producto.id)}>
-                                                        Eliminar
-                                                    </button>
+                                                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarProducto(producto.id)}>Gestionar Stock</button>
+                                                    <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -291,6 +346,8 @@ export default function GestionProductos() {
                 formData={formData}
                 onChange={handleChange}
                 editandoId={editandoId}
+                errores={errores}
+                alerta={alerta}
             />
         </div>
     );

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styles from './gestion_usuarios.module.css';
 import AdminSidebar from '../../../components/sidebar/sidebaradmin';
 import UsuarioModal from '../../../components/modal/modalusuariosadmin';
+import App_alert from "../../../components/alerts/alertas";
 
 const KEY_STORAGE = 'clave_storage';
+const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
-// 5 Usuarios aleatorios predefinidos
 const usuariosAleatoriosIniciales = [
     {
         run: "182223334",
@@ -64,6 +65,53 @@ const usuariosAleatoriosIniciales = [
     }
 ];
 
+const validarUsuario = (data, usuariosExistentes, editandoRun) => {
+    const runTrim = data.run.trim().toUpperCase();
+
+    if (!runTrim || runTrim.length < 8 || runTrim.length > 9) {
+        return "El RUN debe tener entre 8 y 9 caracteres (sin puntos ni guion).";
+    }
+
+    if (editandoRun === null && usuariosExistentes.some(u => u.run === runTrim)) {
+        return "Ya existe un usuario registrado con este RUN.";
+    }
+
+    if (!data.nombre || data.nombre.trim().length < 2) {
+        return "El nombre es obligatorio.";
+    }
+
+    if (!data.apellido || data.apellido.trim().length < 2) {
+        return "El apellido es obligatorio.";
+    }
+
+    const correo = data.correo.trim();
+    const partesCorreo = correo.split('@');
+    const dominio = partesCorreo.length > 1 ? partesCorreo[1] : '';
+
+    if (!correo) {
+        return "El correo electrónico es obligatorio.";
+    } else if (!DOMINIOS_PERMITIDOS.includes(dominio)) {
+        return "Solo se permiten correos @duoc.cl, @profesor.duoc.cl y @gmail.com";
+    }
+
+    const password = data.password.trim();
+    if (!password) {
+        return "La contraseña es obligatoria.";
+    } else if (password.length < 4 || password.length > 10) {
+        return "La contraseña debe tener entre 4 y 10 caracteres.";
+    }
+
+    if (!data.region || !data.comuna) {
+        return "Debes seleccionar una Región y una Comuna.";
+    }
+
+    if (!data.direccion || data.direccion.trim().length < 5) {
+        return "La dirección debe tener al menos 5 caracteres.";
+    }
+
+    return null; 
+};
+
 export default function GestionUsuarios() {
     const [usuarios, setUsuarios] = useState(() => {
         let guardados = localStorage.getItem(KEY_STORAGE);
@@ -93,6 +141,16 @@ export default function GestionUsuarios() {
         direccion: ''
     });
 
+    // Estados necesarios para el manejo dentro del modal
+    const [errores, setErrores] = useState({});
+    const [alerta, setAlerta] = useState({
+        mostrar: false,
+        variant: 'success',
+        msg: '',
+    });
+
+    const cerrarAlert = () => setAlerta((prev) => ({ ...prev, mostrar: false }));
+
     useEffect(() => {
         localStorage.setItem(KEY_STORAGE, JSON.stringify(usuarios));
     }, [usuarios]);
@@ -109,6 +167,8 @@ export default function GestionUsuarios() {
     const abrirModalNuevo = () => {
         setEditandoRun(null);
         setFormData({ run: '', nombre: '', apellido: '', correo: '', password: '', telefono: '', region: '', comuna: '', direccion: '' });
+        setErrores({});
+        setAlerta({ mostrar: false, variant: 'success', msg: '' });
         setShowModal(true);
     };
 
@@ -118,6 +178,8 @@ export default function GestionUsuarios() {
 
         setEditandoRun(usuario.run);
         setFormData({ ...usuario });
+        setErrores({});
+        setAlerta({ mostrar: false, variant: 'success', msg: '' });
         setShowModal(true);
     };
 
@@ -130,21 +192,37 @@ export default function GestionUsuarios() {
 
     const guardarUsuario = (e) => {
         e.preventDefault();
+
+        const error = validarUsuario(formData, usuarios, editandoRun);
+        if (error) {
+            setAlerta({
+                mostrar: true,
+                variant: 'danger',
+                msg: error,
+            });
+            return;
+        }
+
         const runTrim = formData.run.trim().toUpperCase();
 
         let nuevosUsuarios = [...usuarios];
         if (editandoRun !== null) {
             nuevosUsuarios = nuevosUsuarios.map(u => u.run === editandoRun ? { ...formData, run: runTrim } : u);
         } else {
-            if (nuevosUsuarios.some(u => u.run === runTrim)) {
-                alert("Ya existe un usuario registrado con este RUN.");
-                return;
-            }
             nuevosUsuarios.push({ ...formData, run: runTrim });
         }
 
         setUsuarios(nuevosUsuarios);
-        setShowModal(false);
+        setAlerta({
+            mostrar: true,
+            variant: 'success',
+            msg: '¡Usuario guardado con éxito! 🌿',
+        });
+
+        setTimeout(() => {
+            setShowModal(false);
+            setAlerta((prev) => ({ ...prev, mostrar: false }));
+        }, 2000);
     };
 
     return (
@@ -207,7 +285,10 @@ export default function GestionUsuarios() {
                 formData={formData}
                 onChange={handleChange}
                 editandoRun={editandoRun}
-            />
+                errores={errores}
+                alerta={alerta}
+                cerrarAlert={cerrarAlert}
+            /> 
         </div>
     );
 }
