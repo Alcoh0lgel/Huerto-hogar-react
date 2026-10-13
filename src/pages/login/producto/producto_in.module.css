@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 .contenidoPrincipal {
   background-color: #f8f6f0;
@@ -37,6 +38,7 @@
 }
 
 .tituloPresentacion {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313; 
   font-weight: 700;
   font-size: 1.35rem; 
@@ -44,6 +46,7 @@
 }
 
 .textoPresentacion {
+  font-family: "Montserrat", sans-serif;
   color: #4a4a4a;
   font-size: 0.98rem; 
   line-height: 1.6;
@@ -51,12 +54,14 @@
 }
 
 .lema {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 .tituloSeccion {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 700;
   font-size: 1.8rem;
@@ -96,6 +101,7 @@
 }
 
 .tituloProducto {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 700;
   font-size: 1.1rem; 
@@ -103,6 +109,7 @@
 }
 
 .precioProducto {
+  font-family: "Montserrat", sans-serif;
   color: #2d8a53; 
   font-weight: 700;
   font-size: 1.05rem;
@@ -110,14 +117,15 @@
 }
 
 .descripcionProducto {
+  font-family: "Montserrat", sans-serif;
   color: #555555;
   font-size: 0.88rem; 
   line-height: 1.45;
   margin-bottom: 1rem;
 }
 
-/* Botón Verde */
 .btnCarrito {
+  font-family: "Montserrat", sans-serif;
   background-color: #2d8a53;
   color: #ffffff;
   border: none;

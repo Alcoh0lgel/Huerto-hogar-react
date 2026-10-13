@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 .contenidoPrincipal {
   background-color: #f8f6f0;
   flex: 1;
@@ -23,6 +25,7 @@
 
 .tituloFormulario {
   color: #8b4313;
+  font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 1.8rem;
   margin-bottom: 1.75rem;
@@ -33,6 +36,7 @@
   border: 1px solid #e0dcd3 !important;
   border-radius: 8px !important;
   color: #4a4a4a !important;
+  font-family: "Montserrat", sans-serif;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
@@ -43,6 +47,7 @@
 
 .textoError {
   color: #dc3545;
+  font-family: "Montserrat", sans-serif;
   font-size: 0.85rem;
   font-weight: 500;
   text-align: left;
@@ -59,6 +64,7 @@
 .btnSubmit {
   background-color: #2d8a53;
   color: #ffffff;
+  font-family: "Montserrat", sans-serif;
   border: none;
   border-radius: 8px;
   padding: 0.6rem 2rem;

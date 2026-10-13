@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 .contenidoPrincipal {
   background-color: #f8f6f0;
   flex: 1;
@@ -6,6 +8,7 @@
 }
 
 .tituloSeccion {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 700;
   font-size: 1.8rem;
@@ -14,6 +17,7 @@
 }
 
 .tituloSeccionSecundario {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 700;
   font-size: 1.8rem;
@@ -59,6 +63,7 @@
 }
 
 .cardTitulo {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 700;
   font-size: 1.25rem;
@@ -66,6 +71,7 @@
 }
 
 .cardTexto {
+  font-family: "Montserrat", sans-serif;
   color: #4a4a4a;
   font-size: 0.95rem;
   line-height: 1.65;

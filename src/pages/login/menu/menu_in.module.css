@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 .contenidoPrincipal {
   background-color: #f8f6f0;
   flex: 1;
@@ -23,12 +25,14 @@
 }
 
 .tituloSeccion {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 700;
   margin-bottom: 0.75rem;
 }
 
 .textoPresentacion {
+  font-family: "Montserrat", sans-serif;
   color: #555555;
   font-size: 0.9rem;
   line-height: 1.6;
@@ -36,12 +40,14 @@
 }
 
 .lema {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 600;
   font-size: 0.9rem;
 }
 
 .tituloEstrella {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-weight: 700;
   text-align: center;
@@ -67,6 +73,7 @@
 }
 
 .tituloProducto {
+  font-family: "Montserrat", sans-serif;
   color: #8b4313;
   font-size: 0.95rem;
   font-weight: 700;
@@ -82,6 +89,7 @@
 }
 
 .precioProducto {
+  font-family: "Montserrat", sans-serif;
   color: #6c757d;
   font-weight: 600;
   font-size: 0.85rem;
@@ -89,6 +97,7 @@
 }
 
 .btnProducto {
+  font-family: "Montserrat", sans-serif;
   background-color: #2d8a53;
   color: #ffffff;
   border: none;
