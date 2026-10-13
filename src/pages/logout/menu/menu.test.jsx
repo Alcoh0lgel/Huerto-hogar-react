@@ -20,9 +20,7 @@ test('Verifica que se renderice la imagen en la vista principal', () => {
     </CartContext.Provider>
   );
 
-  // Busca una imagen por su texto alternativo (alt)
   const imagen = screen.getByAltText(/Verduras Huerto Hogar/i);
 
-  // Comprueba que la imagen está presente en el documento HTML
   expect(imagen).toBeInTheDocument();
 });
