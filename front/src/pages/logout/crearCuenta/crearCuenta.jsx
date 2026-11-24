@@ -7,8 +7,6 @@ import AppFooter from '../../../components/footer/footer';
 import App_alert from '../../../components/alerts/alertas';
 import { registro } from '../../../api/authApi';
 
-const KEY_STORAGE = 'clave_storage';
-
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
 const validar = (datos) => {
@@ -114,14 +112,18 @@ export const CrearCuenta = () => {
       return;
     }
 
+    const direccionCompleta = [datos.direccion.trim(), datos.comuna, datos.region]
+      .filter(Boolean)
+      .join(', ');
+
     const nuevoUsuario = {
       run: datos.run.trim().toUpperCase(),
       nombre: datos.nombre.trim(),
       apellido: datos.apellido.trim(),
-      correo: datos.correo.trim(),
+      correo: datos.correo.trim().toLowerCase(),
       password: datos.password.trim(),
       telefono: datos.telefono.trim(),
-      direccion: datos.direccion.trim(),
+      direccion: direccionCompleta,
     };
 
     try {
@@ -137,11 +139,12 @@ export const CrearCuenta = () => {
         navigate('/acceder');
       }, 1500);
     } catch (error) {
-      console.error('error al registrar',error);
+      console.error('error al registrar', error);
+      const status = error.status || error.response?.status;
       setAlerta({
         mostrar: true,
         variant: 'danger',
-        msg: error.status === 409
+        msg: status === 409
           ? 'Ese correo ya está registrado.'
           : 'No se pudo crear la cuenta. Intenta de nuevo.',
       });

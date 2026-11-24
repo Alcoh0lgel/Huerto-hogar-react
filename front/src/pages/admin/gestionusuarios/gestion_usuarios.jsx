@@ -2,77 +2,19 @@ import React, { useState, useEffect } from 'react';
 import styles from './gestion_usuarios.module.css';
 import AdminSidebar from '../../../components/sidebar/sidebaradmin';
 import UsuarioModal from '../../../components/modal/modalusuariosadmin';
-import App_alert from "../../../components/alerts/alertas";
+import { registro } from '../../../api/authApi';
+import { obtenerUsuarios, actualizarUsuario, eliminarUsuario as eliminarUsuarioApi } from '../../../api/usuarioApi';
 
-const KEY_STORAGE = 'clave_storage';
-const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
+const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com', 'admin.cl', 'huerthogar.cl'];
 
-const usuariosAleatoriosIniciales = [
-    {
-        run: "182223334",
-        nombre: "Valentina",
-        apellido: "Rojas Soto",
-        correo: "valentina.rojas@duoc.cl",
-        password: "password123",
-        telefono: "+56987654321",
-        region: "Región Metropolitana de Santiago",
-        comuna: "Providencia",
-        direccion: "Av. Suecia 456"
-    },
-    {
-        run: "174445556",
-        nombre: "Matías",
-        apellido: "Herrera Valenzuela",
-        correo: "matias.herrera@gmail.com",
-        password: "password123",
-        telefono: "+56971234567",
-        region: "Región de Valparaíso",
-        comuna: "Viña del Mar",
-        direccion: "Calle San Martín 789"
-    },
-    {
-        run: "196667778",
-        nombre: "Camila",
-        apellido: "Pérez Alarcón",
-        correo: "camila.perez@profesor.duoc.cl",
-        password: "password123",
-        telefono: "+56965432109",
-        region: "Región del Biobío",
-        comuna: "Concepción",
-        direccion: "Barrio Universitario 123"
-    },
-    {
-        run: "16888999K",
-        nombre: "Felipe",
-        apellido: "Gatica Muñoz",
-        correo: "felipe.gatica@gmail.com",
-        password: "password123",
-        telefono: "+56954321098",
-        region: "Región de la Araucanía",
-        comuna: "Temuco",
-        direccion: "Avenida Alemania 990"
-    },
-    {
-        run: "201112223",
-        nombre: "Sofía",
-        apellido: "Navarro Contreras",
-        correo: "sofia.navarro@duoc.cl",
-        password: "password123",
-        telefono: "+56943210987",
-        region: "Región de Coquimbo",
-        comuna: "La Serena",
-        direccion: "Avenida del Mar 4500"
-    }
-];
-
-const validarUsuario = (data, usuariosExistentes, editandoRun) => {
+const validarUsuario = (data, usuariosExistentes, editandoId) => {
     const runTrim = data.run.trim().toUpperCase();
 
-    if (!runTrim || runTrim.length < 8 || runTrim.length > 9) {
-        return "El RUN debe tener entre 8 y 9 caracteres (sin puntos ni guion).";
+    if (!runTrim || runTrim.length < 7 || runTrim.length > 9) {
+        return "El RUN debe tener entre 7 y 9 caracteres (sin puntos ni guion).";
     }
 
-    if (editandoRun === null && usuariosExistentes.some(u => u.run === runTrim)) {
+    if (editandoId === null && usuariosExistentes.some(u => u.run === runTrim)) {
         return "Ya existe un usuario registrado con este RUN.";
     }
 
@@ -91,18 +33,12 @@ const validarUsuario = (data, usuariosExistentes, editandoRun) => {
     if (!correo) {
         return "El correo electrónico es obligatorio.";
     } else if (!DOMINIOS_PERMITIDOS.includes(dominio)) {
-        return "Solo se permiten correos @duoc.cl, @profesor.duoc.cl y @gmail.com";
+        return "Solo se permiten correos @admin.cl, @huerthogar.cl, @duoc.cl, @profesor.duoc.cl y @gmail.com";
     }
 
-    const password = data.password.trim();
-    if (!password) {
-        return "La contraseña es obligatoria.";
-    } else if (password.length < 4 || password.length > 10) {
+    const password = data.password ? data.password.trim() : '';
+    if (editandoId === null && (!password || password.length < 4 || password.length > 10)) {
         return "La contraseña debe tener entre 4 y 10 caracteres.";
-    }
-
-    if (!data.region || !data.comuna) {
-        return "Debes seleccionar una Región y una Comuna.";
     }
 
     if (!data.direccion || data.direccion.trim().length < 5) {
@@ -113,22 +49,9 @@ const validarUsuario = (data, usuariosExistentes, editandoRun) => {
 };
 
 export default function GestionUsuarios() {
-    const [usuarios, setUsuarios] = useState(() => {
-        let guardados = localStorage.getItem(KEY_STORAGE);
-        if (guardados) {
-            try {
-                let parsed = JSON.parse(guardados);
-                if (parsed && parsed.length > 0) return parsed;
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        localStorage.setItem(KEY_STORAGE, JSON.stringify(usuariosAleatoriosIniciales));
-        return usuariosAleatoriosIniciales;
-    });
-
+    const [usuarios, setUsuarios] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [editandoRun, setEditandoRun] = useState(null);
+    const [editandoId, setEditandoId] = useState(null); // Usamos id_usuario de la BD
     const [formData, setFormData] = useState({
         run: '',
         nombre: '',
@@ -141,7 +64,6 @@ export default function GestionUsuarios() {
         direccion: ''
     });
 
-    // Estados necesarios para el manejo dentro del modal
     const [errores, setErrores] = useState({});
     const [alerta, setAlerta] = useState({
         mostrar: false,
@@ -151,9 +73,18 @@ export default function GestionUsuarios() {
 
     const cerrarAlert = () => setAlerta((prev) => ({ ...prev, mostrar: false }));
 
+    const cargarUsuarios = async () => {
+        try {
+            const data = await obtenerUsuarios();
+            setUsuarios(data);
+        } catch (error) {
+            console.error("Error al cargar usuarios desde el backend:", error);
+        }
+    };
+
     useEffect(() => {
-        localStorage.setItem(KEY_STORAGE, JSON.stringify(usuarios));
-    }, [usuarios]);
+        cargarUsuarios();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -165,35 +96,46 @@ export default function GestionUsuarios() {
     };
 
     const abrirModalNuevo = () => {
-        setEditandoRun(null);
+        setEditandoId(null);
         setFormData({ run: '', nombre: '', apellido: '', correo: '', password: '', telefono: '', region: '', comuna: '', direccion: '' });
         setErrores({});
         setAlerta({ mostrar: false, variant: 'success', msg: '' });
         setShowModal(true);
     };
 
-    const editarUsuario = (run) => {
-        const usuario = usuarios.find(u => u.run === run);
-        if (!usuario) return;
-
-        setEditandoRun(usuario.run);
-        setFormData({ ...usuario });
+    const editarUsuario = (usuario) => {
+        setEditandoId(usuario.id_usuario);
+        setFormData({
+            run: usuario.run || '',
+            nombre: usuario.nombre || '',
+            apellido: usuario.apellido || '',
+            correo: usuario.correo || '',
+            password: '', 
+            telefono: usuario.telefono || '',
+            region: '',
+            comuna: '',
+            direccion: usuario.direccion || ''
+        });
         setErrores({});
         setAlerta({ mostrar: false, variant: 'success', msg: '' });
         setShowModal(true);
     };
 
-    const eliminarUsuario = (run) => {
+    const eliminarUsuario = async (id_usuario, run) => {
         if (window.confirm(`¿Seguro que deseas eliminar al usuario con RUN ${run}?`)) {
-            const actualizados = usuarios.filter(u => u.run !== run);
-            setUsuarios(actualizados);
+            try {
+                await eliminarUsuarioApi(id_usuario);
+                cargarUsuarios();
+            } catch (error) {
+                console.error("Error al eliminar usuario:", error);
+            }
         }
     };
 
-    const guardarUsuario = (e) => {
+    const guardarUsuario = async (e) => {
         e.preventDefault();
 
-        const error = validarUsuario(formData, usuarios, editandoRun);
+        const error = validarUsuario(formData, usuarios, editandoId);
         if (error) {
             setAlerta({
                 mostrar: true,
@@ -203,26 +145,46 @@ export default function GestionUsuarios() {
             return;
         }
 
-        const runTrim = formData.run.trim().toUpperCase();
+        const direccionCompleta = formData.comuna && formData.region
+            ? `${formData.direccion.trim()}, ${formData.comuna}, ${formData.region}`
+            : formData.direccion.trim();
 
-        let nuevosUsuarios = [...usuarios];
-        if (editandoRun !== null) {
-            nuevosUsuarios = nuevosUsuarios.map(u => u.run === editandoRun ? { ...formData, run: runTrim } : u);
-        } else {
-            nuevosUsuarios.push({ ...formData, run: runTrim });
+        const payload = {
+            run: formData.run.trim().toUpperCase(),
+            nombre: formData.nombre.trim(),
+            apellido: formData.apellido.trim(),
+            correo: formData.correo.trim(),
+            password: formData.password.trim(),
+            telefono: formData.telefono.trim(),
+            direccion: direccionCompleta, 
+        };
+
+        try {
+            if (editandoId !== null) {
+                await actualizarUsuario(editandoId, payload);
+            } else {
+                await registro(payload);
+            }
+
+            await cargarUsuarios();
+
+            setAlerta({
+                mostrar: true,
+                variant: 'success',
+                msg: '¡Usuario guardado en la base de datos con éxito! 🌿',
+            });
+
+            setTimeout(() => {
+                setShowModal(false);
+                setAlerta((prev) => ({ ...prev, mostrar: false }));
+            }, 1500);
+        } catch (err) {
+            setAlerta({
+                mostrar: true,
+                variant: 'danger',
+                msg: err.status === 409 ? 'Ese correo ya está registrado.' : 'Error al guardar el usuario en el servidor.',
+            });
         }
-
-        setUsuarios(nuevosUsuarios);
-        setAlerta({
-            mostrar: true,
-            variant: 'success',
-            msg: '¡Usuario guardado con éxito! 🌿',
-        });
-
-        setTimeout(() => {
-            setShowModal(false);
-            setAlerta((prev) => ({ ...prev, mostrar: false }));
-        }, 2000);
     };
 
     return (
@@ -234,7 +196,7 @@ export default function GestionUsuarios() {
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className={styles.mainTitle}>Gestión de Usuarios</h2>
                         <button className={`btn ${styles.btnPrimaryCustom}`} onClick={abrirModalNuevo}>
-                            + Agregar Usuario
+                            + Agregar Usuario / Admin
                         </button>
                     </div>
 
@@ -245,29 +207,35 @@ export default function GestionUsuarios() {
                                     <th>RUN</th>
                                     <th>Nombre Completo</th>
                                     <th>Correo</th>
+                                    <th>Rol</th>
                                     <th>Teléfono</th>
-                                    <th>Comuna / Región</th>
+                                    <th>Dirección</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {usuarios.length === 0 ? (
                                     <tr>
-                                        <td colSpan="6" className="text-center text-muted py-3">
-                                            No hay usuarios registrados en el sistema.
+                                        <td colSpan="7" className="text-center text-muted py-3">
+                                            No hay usuarios registrados en la base de datos.
                                         </td>
                                     </tr>
                                 ) : (
                                     usuarios.map((u) => (
-                                        <tr key={u.run}>
+                                        <tr key={u.id_usuario}>
                                             <td className="fw-bold">{u.run}</td>
                                             <td>{u.nombre} {u.apellido}</td>
                                             <td>{u.correo}</td>
-                                            <td>{u.telefono || 'N/A'}</td>
-                                            <td>{u.comuna}, {u.region}</td>
                                             <td>
-                                                <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarUsuario(u.run)}>Editar</button>
-                                                <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarUsuario(u.run)}>Eliminar</button>
+                                                <span className={`badge ${u.rol === 'ADMIN' ? 'bg-danger' : 'bg-success'}`}>
+                                                    {u.rol}
+                                                </span>
+                                            </td>
+                                            <td>{u.telefono || 'N/A'}</td>
+                                            <td>{u.direccion}</td>
+                                            <td>
+                                                <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarUsuario(u)}>Editar</button>
+                                                <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarUsuario(u.id_usuario, u.run)}>Eliminar</button>
                                             </td>
                                         </tr>
                                     ))
@@ -284,7 +252,7 @@ export default function GestionUsuarios() {
                 onSubmit={guardarUsuario}
                 formData={formData}
                 onChange={handleChange}
-                editandoRun={editandoRun}
+                editandoRun={editandoId}
                 errores={errores}
                 alerta={alerta}
                 cerrarAlert={cerrarAlert}

@@ -23,13 +23,16 @@ public class AuthService {
     private JwtService jwtService;
 
     public boolean registrar(Usuario usuario){
-        if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()) {
+        String correo = usuario.getCorreo().trim().toLowerCase();
+
+        if (usuarioRepository.findByCorreo(correo).isPresent()) {
             return false;
         }
-        usuario.setId_usuario(0); 
+
+        usuario.setId_usuario(0);
+        usuario.setCorreo(correo);
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 
-        String correo = usuario.getCorreo().trim().toLowerCase();
         if (correo.endsWith("@admin.cl") || correo.endsWith("@huerthogar.cl")) {
             usuario.setRol("ADMIN");
         } else {
@@ -41,12 +44,14 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request){
-        Usuario usuario = usuarioRepository.findByCorreo(request.getCorreo()).orElse(null);
+        String correo = request.getCorreo().trim().toLowerCase();
+        Usuario usuario = usuarioRepository.findByCorreo(correo).orElse(null);
+
         if (usuario == null || !passwordEncoder.matches(request.getPassword(), usuario.getPassword())) {
             return null;
         }
+
         String token = jwtService.generarToken(usuario.getCorreo(), usuario.getRol());
         return new AuthResponse(token, "Bearer", usuario.getRol(), jwtService.getExpiracionSegundos());
     }
-
 }

@@ -62,7 +62,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UsuarioRepository usuarioRepository){
-        return correo -> usuarioRepository.findByCorreo(correo)
+        return correo -> usuarioRepository.findByCorreo(correo.trim().toLowerCase())
                 .map(u -> User.withUsername(u.getCorreo()).password(u.getPassword()).build())
                 .orElseThrow(() -> new UsernameNotFoundException(correo));
     }

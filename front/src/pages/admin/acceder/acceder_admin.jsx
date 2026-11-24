@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavigationBar from '../../../components/navbar/navbaraccederadmin';
 import styles from './acceder_admin.module.css';
+import { login } from '../../../api/authApi';
+import { guardarToken, guardarRol } from "../../../auth/auth";
 
 const DOMINIOS_PERMITIDOS = ['admin.cl', 'huerthogar.cl'];
 
@@ -44,17 +46,30 @@ export default function LoginAdmin({ onLoginSuccess }) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const nuevosErrores = validar(datos);
         setErrores(nuevosErrores);
 
         if (Object.keys(nuevosErrores).length > 0) return;
 
-        if (onLoginSuccess) onLoginSuccess();
-        navigate('/admin/panel');
-    };
+        try {
+            const respuesta = await login(datos.correo.trim(), datos.password.trim());
 
+            if (respuesta.rol !== 'ADMIN') {
+                setErrores({ correo: 'Esta cuenta no tiene permisos de administrador.' });
+                return;
+            }
+
+            guardarToken(respuesta.token);
+            guardarRol(respuesta.rol);
+
+            if (onLoginSuccess) onLoginSuccess();
+            navigate('/admin/panel');
+        } catch {
+            setErrores({ password: 'Correo o contraseña incorrectos.' });
+        }
+    };
     return (
         <>
             <NavigationBar />

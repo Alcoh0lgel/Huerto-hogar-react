@@ -81,6 +81,9 @@ export default function UsuarioModal({ show, onClose, onSubmit, formData, onChan
                                     value={formData.correo}
                                     onChange={onChange}
                                 />
+                                <div className="form-text">
+                                    Usa <strong>@admin.cl</strong> o <strong>@huerthogar.cl</strong> para crear un Administrador.
+                                </div>
                                 {errores.correo && <div className="invalid-feedback">{errores.correo}</div>}
                             </div>
 

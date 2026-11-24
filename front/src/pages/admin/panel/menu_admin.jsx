@@ -14,7 +14,7 @@ export default function AdminPerfil() {
     };
 
     return (
-        <div className={styles.perfilLayout}>
+        <div className={styles.perfilLayout}>w
             {/* Sidebar con acceso a perfil, productos y boletas */}
             <AdminSidebar vistaActiva="" setVistaActiva={() => {}} />
 

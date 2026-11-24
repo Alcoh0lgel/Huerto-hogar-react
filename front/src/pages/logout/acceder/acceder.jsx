@@ -4,13 +4,15 @@ import NavbarAcceder from '../../../components/navbar/navbaracceder';
 import AppFooter from '../../../components/footer/footer';
 import logo from '../../../components/imagenes/HuertoHogar.png';
 import styles from './acceder.module.css';
+import { login } from '../../../api/authApi';
+import { guardarToken, guardarRol } from '../../../auth/auth';
 
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
 const validar = (datos) => {
   const errores = {};
 
-  const correo = datos.correo.trim();
+  const correo = datos.correo.trim().toLowerCase();
   const partesCorreo = correo.split('@');
   const dominio = partesCorreo.length > 1 ? partesCorreo[1] : '';
 
@@ -44,15 +46,23 @@ export const Acceder = () => {
     setDatos({ ...datos, [name]: value });
   };
 
- const handleSubmit = async () => {
+ const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
     const nuevosErrores = validar(datos);
     setErrores(nuevosErrores);
 
     if (Object.keys(nuevosErrores).length > 0) return;
 
     try {
-      const respuesta = await login(datos.correo.trim(), datos.password.trim());
+      const respuesta = await login(datos.correo.trim().toLowerCase(), datos.password.trim());
+
+      if (respuesta.rol === 'ADMIN') {
+        setErrores({ correo: 'Las cuentas administrativas deben ingresar por el portal de administrador.' });
+        return;
+      }
+
       guardarToken(respuesta.token);
+      guardarRol(respuesta.rol || 'CLIENTE');
       navigate('/login/menu');
     } catch {
       setErrores({ password: 'Correo o contraseña incorrectos.' });
@@ -76,7 +86,7 @@ export const Acceder = () => {
           {/* Título en Café Tierra */}
           <h2 className={styles.tituloFormulario}>Inicio de sesión</h2>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             {/* Campo Correo Electrónico */}
             <div className="form-floating mb-3">
               <input
