@@ -38,12 +38,10 @@ public class ProductoService {
             return null;
         }
         existente.setNombre(producto.getNombre());
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-       // existente.setColor(producto.getImagen());
-       //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-       existente.setPrecio(producto.getPrecio());
-       existente.setStock(producto.getStock());
-       existente.setDescripcion(producto.getDescripcion());
+        existente.setImagen(producto.getImagen());
+        existente.setPrecio(producto.getPrecio());
+        existente.setStock(producto.getStock());
+        existente.setDescripcion(producto.getDescripcion());
         existente.setCategoria(categoriaRepository.findById(producto.getCategoria().getIdCategoria()).orElse(null));
         return productoRepository.save(existente);
     }

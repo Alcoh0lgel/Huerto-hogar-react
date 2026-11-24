@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import Huerto_Hogar.Detalle_boleta.models.entities.Producto;
 import Huerto_Hogar.Detalle_boleta.models.entities.Usuario;
 import Huerto_Hogar.Detalle_boleta.repository.UsuarioRepository;
 
@@ -24,6 +25,20 @@ public class UsuarioService {
 
     public Usuario guardar(Usuario usuario){
         return usuarioRepository.save(usuario);
+    }
+
+    public Usuario actualizar(int id, Usuario usuario){
+        Usuario existente = usuarioRepository.findById(id).orElse(null);
+        if (existente == null) {
+            return null;
+        }
+        existente.setNombre(usuario.getNombre());
+        existente.setApellido(usuario.getApellido());
+        existente.setCorreo(usuario.getCorreo());
+        existente.setPassword(usuario.getPassword());
+        existente.setTelefono(usuario.getTelefono());
+        existente.setDireccion(usuario.getDireccion());
+        return usuarioRepository.save(existente);
     }
 
     public boolean eliminar(Integer id){
