@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import Huerto_Hogar.Detalle_boleta.models.entities.Boleta;
-import Huerto_Hogar.Detalle_boleta.models.entities.Producto;
+import Huerto_Hogar.Detalle_boleta.models.entities.Usuario;
 import Huerto_Hogar.Detalle_boleta.repository.BoletaRepository;
 import Huerto_Hogar.Detalle_boleta.repository.UsuarioRepository;
 
@@ -26,21 +26,31 @@ public class BoletaService {
         return boletaRepository.findById(id).orElse(null);
     }
 
-    public Boleta guardar(Boleta boleta){
-        boleta.setUsuario(usuarioRepository.findById(boleta.getUsuario().getId_usuario()).orElse(null));
+    public Boleta guardar(Boleta boleta) {
+        Usuario usuario = usuarioRepository.findById(boleta.getUsuario().getId_usuario()).orElse(null);
+        if (usuario == null) {
+            return null;
+        }
+        boleta.setUsuario(usuario);
         return boletaRepository.save(boleta);
     }
 
-    public Boleta actualizar(int id, Boleta boleta){
+    public Boleta actualizar(int id, Boleta boleta) {
         Boleta existente = boletaRepository.findById(id).orElse(null);
         if (existente == null) {
             return null;
         }
+        Usuario usuario = usuarioRepository.findById(boleta.getUsuario().getId_usuario()).orElse(null);
+        if (usuario == null) {
+            return null;
+        }
+
         existente.setFechaEmision(boleta.getFechaEmision());
         existente.setMontoTotal(boleta.getMontoTotal());
         existente.setNombreEmisor(boleta.getNombreEmisor());
         existente.setRutEmisor(boleta.getRutEmisor());
-        existente.setUsuario(usuarioRepository.findById(boleta.getUsuario().getId_usuario()).orElse(null));
+        existente.setUsuario(usuario);
+
         return boletaRepository.save(existente);
     }
 

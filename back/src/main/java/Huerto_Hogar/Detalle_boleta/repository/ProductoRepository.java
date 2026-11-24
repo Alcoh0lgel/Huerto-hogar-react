@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import Huerto_Hogar.Detalle_boleta.models.entities.Producto;
 
-
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer>  {
     

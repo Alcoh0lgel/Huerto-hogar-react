@@ -31,7 +31,7 @@ public class Boleta {
     @Column(nullable = false)
     private String rutEmisor;
     
-      @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
