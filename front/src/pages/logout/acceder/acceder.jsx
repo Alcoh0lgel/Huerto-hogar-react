@@ -44,14 +44,19 @@ export const Acceder = () => {
     setDatos({ ...datos, [name]: value });
   };
 
-  const handleSubmit = () => {
+ const handleSubmit = async () => {
     const nuevosErrores = validar(datos);
     setErrores(nuevosErrores);
 
     if (Object.keys(nuevosErrores).length > 0) return;
 
-    console.log("Inicio de sesión exitoso:", datos);
-    navigate('/login/menu');
+    try {
+      const respuesta = await login(datos.correo.trim(), datos.password.trim());
+      guardarToken(respuesta.token);
+      navigate('/login/menu');
+    } catch {
+      setErrores({ password: 'Correo o contraseña incorrectos.' });
+    }
   };
 
   return (

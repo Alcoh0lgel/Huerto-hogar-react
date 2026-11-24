@@ -5,6 +5,7 @@ import NavbarAcceder from '../../../components/navbar/navbaracceder';
 import styles from './crearCuenta.module.css';
 import AppFooter from '../../../components/footer/footer';
 import App_alert from '../../../components/alerts/alertas';
+import { registro } from '../../../api/authApi';
 
 const KEY_STORAGE = 'clave_storage';
 
@@ -100,7 +101,7 @@ export const CrearCuenta = () => {
     }
   };
 
-  const handleSubmit = () => {
+ const handleSubmit = async () => {
     const nuevosErrores = validar(datos);
     setErrores(nuevosErrores);
 
@@ -120,26 +121,34 @@ export const CrearCuenta = () => {
       correo: datos.correo.trim(),
       password: datos.password.trim(),
       telefono: datos.telefono.trim(),
-      region: datos.region,
-      comuna: datos.comuna,
       direccion: datos.direccion.trim(),
     };
 
-    const lista = JSON.parse(localStorage.getItem(KEY_STORAGE)) || [];
-    lista.push(nuevoUsuario);
-    localStorage.setItem(KEY_STORAGE, JSON.stringify(lista));
+    try {
+      await registro(nuevoUsuario);
 
-    setAlerta({
-      mostrar: true,
-      variant: 'success',
-      msg: '¡Cuenta creada con éxito! Redirigiendo... 🌱',
-    });
+      setAlerta({
+        mostrar: true,
+        variant: 'success',
+        msg: '¡Cuenta creada con éxito! Redirigiendo... 🌱',
+      });
 
-    setTimeout(() => {
-      navigate('/');
-    }, 1500);
+      setTimeout(() => {
+        navigate('/acceder');
+      }, 1500);
+    } catch (error) {
+      console.error('error al registrar',error);
+      setAlerta({
+        mostrar: true,
+        variant: 'danger',
+        msg: error.status === 409
+          ? 'Ese correo ya está registrado.'
+          : 'No se pudo crear la cuenta. Intenta de nuevo.',
+      });
+    }
   };
 
+   
   return (
     <>
       <NavbarAcceder />

@@ -26,6 +26,8 @@ import BoletasAdmin from './pages/admin/boletas/boletas';
 import ReportesAdmin from './pages/admin/reportes/reportes';
 import GestionUsuarios from './pages/admin/gestionusuarios/gestion_usuarios';
 
+import RutaProtegida from './components/rutaProtegida/rutaProtegida';
+
 export const routes = createBrowserRouter([
     //primero las publicas para no confundirnos
     {
@@ -59,49 +61,49 @@ export const routes = createBrowserRouter([
     //Ahora vienen las log in
     {
         path:'/login/menu',
-        element:<MenuIn/>
+        element:<RutaProtegida><MenuIn/></RutaProtegida>
     },
     {
         path:'/login/nosotros',
-        element:<NosotrosIn/>
+        element:<RutaProtegida><NosotrosIn/></RutaProtegida>
     },
     {
         path:'/login/blogs',
-        element:<BlogsIn/>
+        element:<RutaProtegida><BlogsIn/></RutaProtegida>
     },
     {
         path:'/login/contacto',
-        element:<ContactoIn/>
+        element:<RutaProtegida><ContactoIn/></RutaProtegida>
     },
     {
         path:'/login/producto',
-        element:<ProductoIn/>
+        element:<RutaProtegida><ProductoIn/></RutaProtegida>
     },
     {
         path:'login/perfil',
-        element:<Perfil/>
+        element:<RutaProtegida><Perfil/></RutaProtegida>
     },
     //Administrador
-    {
+     {
         path:'/admin/acceder',
         element:<AccederAdmin/>
     },
     {
         path:'/admin/panel',
-        element:<MenuAdmin/>
+        element:<RutaProtegida><MenuAdmin/></RutaProtegida>
     },
     {
         path:'/admin/productos',
-        element:<GestionProductos/>
+        element:<RutaProtegida><GestionProductos/></RutaProtegida>
     },
     {
         path:'/admin/boletas',
-        element:<BoletasAdmin/>
+        element:<RutaProtegida><BoletasAdmin/></RutaProtegida>
     },{
         path:'/admin/reportes',
-        element:<ReportesAdmin/>
+        element:<RutaProtegida><ReportesAdmin/></RutaProtegida>
     },{
         path:'/admin/usuarios',
-        element:<GestionUsuarios/>
+        element:<RutaProtegida><GestionUsuarios/></RutaProtegida>
     }
 ]);

@@ -1,4 +1,5 @@
 package Huerto_Hogar.Detalle_boleta.controller;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,11 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import Huerto_Hogar.Detalle_boleta.models.dto.AuthResponse;
 import Huerto_Hogar.Detalle_boleta.models.dto.LoginRequest;
-import org.springframework.web.bind.annotation.*;;
+import Huerto_Hogar.Detalle_boleta.models.entities.Usuario;
+import Huerto_Hogar.Detalle_boleta.service.AuthService;
 
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/auth")
@@ -18,14 +22,23 @@ import org.springframework.web.bind.annotation.*;;
 public class AuthController {
 
     @Autowired
-    private AuthService authservice;
+    private AuthService authService;
 
-    @PostMapping("/acceder")
-    public ResponseEntity<Map<String,String >> acceder(@RequestBody LoginRequest request){
-        if (! authservice.acceder(request)){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("mensaje", "El usuario ya existe"));
+    @PostMapping("/registro")
+    public ResponseEntity<Map<String, String>> registrar(@RequestBody Usuario usuario){
+        if (!authService.registrar(usuario)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("mensaje", "El correo ya está registrado"));
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("mensaje","Usuario ya registrado"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("mensaje", "Usuario registrado"));
     }
-    
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request){
+        AuthResponse respuesta = authService.login(request);
+        if (respuesta == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(respuesta);
+    }
+
 }
