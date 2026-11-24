@@ -24,19 +24,19 @@ public class JwtService {
         this.expiracionMinutos = expiracionMinutos;
     }
 
-    // el "subject" del token es el correo del usuario
-    public String generarToken(String correo){
+    
+    public String generarToken(String correo, String rol){
         Date ahora = new Date();
         Date expiracion = new Date(ahora.getTime() + getExpiracionSegundos() * 1000);
         return Jwts.builder()
                 .subject(correo)
+                .claim("rol", rol) 
                 .issuedAt(ahora)
                 .expiration(expiracion)
                 .signWith(key)
                 .compact();
     }
 
-    // devuelve el correo si el token es valido y no ha expirado, si no null
     public String validarToken(String token){
         try {
             return Jwts.parser()
@@ -52,6 +52,19 @@ public class JwtService {
 
     public long getExpiracionSegundos(){
         return expiracionMinutos * 60;
+    }
+
+    public String extraerRol(String token){
+        try {
+            return Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .get("rol", String.class);
+        } catch (JwtException | IllegalArgumentException e) {
+            return null;
+        }
     }
 
 }

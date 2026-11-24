@@ -38,4 +38,6 @@ public class Usuario {
     @Column(nullable = false)
     private String direccion;
 
+    @Column(nullable = false)
+    private String rol = "CLIENTE";
 }

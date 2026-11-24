@@ -22,25 +22,31 @@ public class AuthService {
     @Autowired
     private JwtService jwtService;
 
-    // devuelve false si el correo ya existe
-     public boolean registrar(Usuario usuario){
+    public boolean registrar(Usuario usuario){
         if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()) {
             return false;
         }
-        usuario.setId_usuario(0); // siempre crea uno nuevo
+        usuario.setId_usuario(0); 
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+
+        String correo = usuario.getCorreo().trim().toLowerCase();
+        if (correo.endsWith("@admin.cl") || correo.endsWith("@huerthogar.cl")) {
+            usuario.setRol("ADMIN");
+        } else {
+            usuario.setRol("CLIENTE");
+        }
+
         usuarioRepository.save(usuario);
         return true;
     }
 
-    // devuelve null si las credenciales no son validas
     public AuthResponse login(LoginRequest request){
         Usuario usuario = usuarioRepository.findByCorreo(request.getCorreo()).orElse(null);
         if (usuario == null || !passwordEncoder.matches(request.getPassword(), usuario.getPassword())) {
             return null;
         }
-        String token = jwtService.generarToken(usuario.getCorreo());
-        return new AuthResponse(token, "Bearer", jwtService.getExpiracionSegundos());
+        String token = jwtService.generarToken(usuario.getCorreo(), usuario.getRol());
+        return new AuthResponse(token, "Bearer", usuario.getRol(), jwtService.getExpiracionSegundos());
     }
 
 }
