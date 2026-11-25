@@ -99,7 +99,9 @@ function Carrito() {
       cerrarAlert();
 
       // 1. Obtener usuario autenticado
+      console.log('1. Iniciando pago, carrito:', carrito);
       const usuario = await getPerfilUsuario();
+      console.log('2. Usuario:', usuario);
       if (!usuario || !usuario.id_usuario) {
         mostrarAlerta('danger', 'Debes iniciar sesión para completar la compra.');
         setProcesando(false);

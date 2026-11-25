@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { RouterProvider } from 'react-router-dom';
 import { routes } from './routes.jsx';
 import { CartProvider } from './context/cartContext.jsx';
-import Carrito from './components/carrito/carrito.jsx';
+import Carrito from './components/carrito/Carrito.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -233,8 +233,8 @@ export const Perfil = () => {
                     📦 Historial de Pedidos ({boletas.length})
                   </button>
                   <button
-                    className={`${styles.btnTab} ${pestaña === 'pedidos' ? styles.btnTabActive : ''}`}
-                    onClick={() => setPestaña('pedidos')}
+                    className={`${styles.btnTab} ${pestaña === 'boletas' ? styles.btnTabActive : ''}`}
+                    onClick={() => setPestaña('boletas')}
                   >
                     🧾 Mis Boletas ({boletas.length})
                   </button>
