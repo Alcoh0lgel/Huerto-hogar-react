@@ -138,7 +138,7 @@ function Carrito() {
           precioUnitario: det.precioUnitario,
           subtotal: det.cantidad * det.precioUnitario,
           boleta: { idBoleta: nuevaBoleta.idBoleta },
-          producto: { id_producto: det.idProducto, idProducto: det.idProducto },
+          producto: { id_producto: Number(det.idProducto)},
         });
       }
 
