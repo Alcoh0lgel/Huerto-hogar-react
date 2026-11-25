@@ -1,62 +1,36 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import NavigationBarIn from '../../../components/navbar/navbarIn';
 import { CartContext } from '../../../context/cartContext';
 import styles from './producto_in.module.css';
-import AppFooter from '../../../components/footer/footer'
+import AppFooter from '../../../components/footer/footer';
+import { obtenerProductos } from '../../../api/productoApi';
 
-const productosEstrellas = [
-  {
-    id: 1,
-    nombre: "Manzana Fuji",
-    imagen: "/img/manzana.png",
-    precio: 1200,
-    stock: 150,
-    descripcion: "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule. Perfectas para meriendas saludables o como ingrediente en postres. Estas manzanas son conocidas por su textura firme y su sabor equilibrado entre dulce y ácido."
-  },
-  {
-    id: 2,
-    nombre: "Naranjas Valencia",
-    imagen: "/img/naranja.png",
-    precio: 1000,
-    stock: 200,
-    descripcion: "Jugosas y ricas en vitamina C, estas naranjas Valencia son ideales para zumos frescos y refrescantes. Cultivadas en condiciones climáticas óptimas que aseguran su dulzura y jugosidad."
-  },
-  {
-    id: 3,
-    nombre: "Plátanos Cavendish",
-    imagen: "/img/platano.png",
-    precio: 800,
-    stock: 250,
-    descripcion: "Plátanos maduros y dulces, perfectos para el desayuno o como snack energético. Estos plátanos son ricos en potasio y vitaminas, ideales para mantener una dieta equilibrada."
-  },
-  {
-    id: 4,
-    nombre: "Zanahorias Orgánicas",
-    imagen: "/img/zanahoria.png",
-    precio: 900,
-    stock: 100,
-    descripcion: "Zanahorias crujientes cultivadas sin pesticidas en la Región de O'Higgins. Excelente fuente de vitamina A y fibra, ideales para ensaladas, jugos o como snack saludable."
-  },
-  {
-    id: 5,
-    nombre: "Espinacas Frescas",
-    imagen: "/img/espinaca.png",
-    precio: 700,
-    stock: 80,
-    descripcion: "Espinacas frescas y nutritivas, perfectas para ensaladas y batidos verdes. Estas espinacas son cultivadas bajo prácticas orgánicas que garantizan su calidad y valor nutricional."
-  },
-  {
-    id: 6,
-    nombre: "Pimientos Tricolores",
-    imagen: "/img/pimenton.png",
-    precio: 1500,
-    stock: 120,
-    descripcion: "Pimientos rojos, amarillos y verdes, ideales para salteados y platos coloridos. Ricos en antioxidantes y vitaminas, estos pimientos añaden un toque vibrante y saludable a cualquier receta."
-  }
+const CATEGORIAS = [
+  { id: 'TODAS', nombre: 'Todos' },
+  { id: '1', nombre: 'Frutas Frescas' },
+  { id: '2', nombre: 'Productos Lácteos' },
+  { id: '3', nombre: 'Verduras Orgánicas' },
+  { id: '4', nombre: 'Productos Orgánicos' },
 ];
 
 function Producto() {
   const { agregarAlCarrito } = useContext(CartContext);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [productos, setProductos] = useState([]);
+
+  const categoriaActiva = searchParams.get('categoria') || 'TODAS';
+
+  useEffect(() => {
+    obtenerProductos()
+      .then(setProductos)
+      .catch((err) => console.error('Error:', err));
+  }, []);
+
+  const productosFiltrados =
+    categoriaActiva === 'TODAS'
+      ? productos
+      : productos.filter((p) => String(p.categoria?.idCategoria) === categoriaActiva);
 
   return (
     <>
@@ -66,15 +40,14 @@ function Producto() {
         {/* Sección de Presentación Escalonada */}
         <section className="container my-3 mt-3">
           <div className={styles.contenedorPresentacion}>
-            
             {/* Tarjeta Izquierda */}
             <div className={`${styles.tarjetaPresentacion} ${styles.tarjetaIzquierda}`}>
               <div className="row align-items-center g-3">
                 <div className="col-12 col-md-4 text-center">
-                  <img 
-                    src="/img/verduras.jpg" 
-                    className={styles.imagenPresentacion} 
-                    alt="Frescura Real" 
+                  <img
+                    src="/img/verduras.jpg"
+                    className={styles.imagenPresentacion}
+                    alt="Frescura Real"
                   />
                 </div>
                 <div className="col-12 col-md-8">
@@ -95,10 +68,10 @@ function Producto() {
             <div className={`${styles.tarjetaPresentacion} ${styles.tarjetaDerecha}`}>
               <div className="row align-items-center g-3">
                 <div className="col-12 col-md-4 text-center">
-                  <img 
-                    src="/img/verduras.jpg" 
-                    className={styles.imagenPresentacion} 
-                    alt="Tu Cosecha del Día" 
+                  <img
+                    src="/img/verduras.jpg"
+                    className={styles.imagenPresentacion}
+                    alt="Tu Cosecha del Día"
                   />
                 </div>
                 <div className="col-12 col-md-8">
@@ -114,7 +87,6 @@ function Producto() {
                 </div>
               </div>
             </div>
-
           </div>
         </section>
 
@@ -122,38 +94,39 @@ function Producto() {
         <section id="productosVenta" className="container my-4">
           <h2 className={styles.tituloSeccion}>Nuestros Productos</h2>
 
+          <div className="d-flex flex-wrap justify-content-center gap-2 mb-4">
+            {CATEGORIAS.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                className={`btn btn-sm ${categoriaActiva === cat.id ? 'btn-success' : 'btn-outline-success'}`}
+                onClick={() => setSearchParams(cat.id === 'TODAS' ? {} : { categoria: cat.id })}
+              >
+                {cat.nombre}
+              </button>
+            ))}
+          </div>
+
           <div className="row g-4">
-            {productosEstrellas.map((item) => (
-              <div key={item.id} className="col-12 col-md-6 col-lg-4">
+            {productosFiltrados.map((item) => (
+              <div key={item.idProducto || item.id} className="col-12 col-md-6 col-lg-4">
                 <div className={styles.cardProducto}>
                   <div className="row g-0 h-100">
-                    
-                    {/* Imagen a la izquierda */}
                     <div className="col-4 p-2">
-                      <img 
-                        src={item.imagen} 
-                        alt={item.nombre} 
-                        className={styles.imagenProducto} 
-                      />
+                      <img src={item.imagen} alt={item.nombre} className={styles.imagenProducto} />
                     </div>
-
-                    {/* Contenido a la derecha */}
                     <div className="col-8">
                       <div className={styles.detallesProducto}>
                         <div>
-                          <h5 className={styles.tituloProducto}>
-                            {item.nombre}
-                          </h5>
-                          <p className={styles.precioProducto}>
-                            $ {item.precio} x Kg
-                          </p>
-                          <p className={styles.descripcionProducto}>
-                            {item.descripcion}
-                          </p>
+                          <span className="badge bg-light text-success border border-success mb-1">
+                            {item.categoria?.nombreCategoria || 'Sin categoría'}
+                          </span>
+                          <h5 className={styles.tituloProducto}>{item.nombre}</h5>
+                          <p className={styles.precioProducto}>$ {item.precio} x Kg</p>
+                          <p className={styles.descripcionProducto}>{item.descripcion}</p>
                         </div>
-
                         <div>
-                          <button 
+                          <button
                             type="button"
                             className={styles.btnCarrito}
                             onClick={() => agregarAlCarrito(item)}
@@ -163,7 +136,6 @@ function Producto() {
                         </div>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -172,7 +144,7 @@ function Producto() {
         </section>
       </main>
 
-      <AppFooter/>
+      <AppFooter />
     </>
   );
 }

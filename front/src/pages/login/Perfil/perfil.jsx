@@ -6,7 +6,6 @@ import ModalBoletas from '../../../components/modal/modalboletas';
 import { getPerfilUsuario, actualizarPerfilUsuario } from '../../../api/usuarioApi';
 import { getMisBoletas, getDetallesBoleta } from '../../../api/boletaApi';
 
-// Función de validación declarada fuera del componente
 const DOMINIOS_PERMITIDOS = ['duoc.cl', 'profesor.duoc.cl', 'gmail.com'];
 
 const validarPerfil = (datos) => {

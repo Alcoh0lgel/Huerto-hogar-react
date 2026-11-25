@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import { Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -28,14 +27,9 @@ function NavigationBarIn() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto align-items-center">
               
-              <NavDropdown title={<span className={styles.navLink}>Productos</span>} id="productos-nav-dropdown">
-                <NavDropdown.Item as={Link} to="/login/producto">Todos los Productos</NavDropdown.Item>
-                <NavDropdown.Item href="#">Frutas Frescas</NavDropdown.Item>
-                <NavDropdown.Item href="#">Verduras Orgánicas</NavDropdown.Item>
-                <NavDropdown.Item href="#">Productos Orgánicos</NavDropdown.Item>
-                <NavDropdown.Item href="#">Productos Lácteos</NavDropdown.Item>
-              </NavDropdown>
-
+              <Nav.Link as={Link} to="/login/producto" className={styles.navLink}>
+                Productos
+              </Nav.Link>
               <Nav.Link as={Link} to="/login/nosotros" className={styles.navLink}>
                 Nosotros
               </Nav.Link>

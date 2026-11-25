@@ -27,19 +27,21 @@ export default function ProductoModal({ show, onClose, onSubmit, formData, onCha
                                 />
                             </div>
 
-                            <div className="mb-3">
-                                <label htmlFor="prodId" className="form-label">ID</label>
-                                <input 
-                                    type="number" 
-                                    className={`form-control ${errores.id ? 'is-invalid' : ''}`} 
-                                    id="prodId" 
-                                    name="id"
-                                    value={formData.id}
-                                    onChange={onChange}
-                                    disabled={editandoId !== null}
-                                />
-                                {errores.id && <div className="invalid-feedback">{errores.id}</div>}
-                            </div>
+                            {/* El ID solo se muestra al editar, ya que al crear lo asigna MySQL */}
+                            {editandoId !== null && (
+                                <div className="mb-3">
+                                    <label htmlFor="prodId" className="form-label">ID</label>
+                                    <input 
+                                        type="number" 
+                                        className="form-control" 
+                                        id="prodId" 
+                                        name="id"
+                                        value={formData.id}
+                                        disabled
+                                    />
+                                </div>
+                            )}
+
                             <div className="mb-3">
                                 <label htmlFor="prodNombre" className="form-label">Nombre</label>
                                 <input 
@@ -53,6 +55,25 @@ export default function ProductoModal({ show, onClose, onSubmit, formData, onCha
                                 />
                                 {errores.nombre && <div className="invalid-feedback">{errores.nombre}</div>}
                             </div>
+
+                            <div className="mb-3">
+                                <label htmlFor="prodCategoria" className="form-label">Categoría</label>
+                                <select
+                                    className={`form-select ${errores.idCategoria ? 'is-invalid' : ''}`}
+                                    id="prodCategoria"
+                                    name="idCategoria"
+                                    value={formData.idCategoria}
+                                    onChange={onChange}
+                                >
+                                    <option value="">Selecciona una categoría...</option>
+                                    <option value="1">Frutas Frescas</option>
+                                    <option value="2">Productos Lácteos</option>
+                                    <option value="3">Verduras Orgánicas</option>
+                                    <option value="4">Productos Orgánicos</option>
+                                </select>
+                                {errores.idCategoria && <div className="invalid-feedback">{errores.idCategoria}</div>}
+                            </div>
+
                             <div className="mb-3">
                                 <label htmlFor="prodImagen" className="form-label">Enlace de Imagen</label>
                                 <input 
@@ -60,13 +81,14 @@ export default function ProductoModal({ show, onClose, onSubmit, formData, onCha
                                     className="form-control" 
                                     id="prodImagen"
                                     name="imagen"
-                                    placeholder="../img" 
+                                    placeholder="/img/manzana.png" 
                                     value={formData.imagen}
                                     onChange={onChange}
                                 />
                             </div>
+
                             <div className="mb-3">
-                                <label htmlFor="prodPrecio" className="form-label">Precio($)</label>
+                                <label htmlFor="prodPrecio" className="form-label">Precio ($)</label>
                                 <input 
                                     type="number" 
                                     className={`form-control ${errores.precio ? 'is-invalid' : ''}`} 
@@ -78,6 +100,7 @@ export default function ProductoModal({ show, onClose, onSubmit, formData, onCha
                                 />
                                 {errores.precio && <div className="invalid-feedback">{errores.precio}</div>}
                             </div>
+
                             <div className="mb-3">
                                 <label htmlFor="prodStock" className="form-label">Stock</label>
                                 <input 
@@ -92,8 +115,9 @@ export default function ProductoModal({ show, onClose, onSubmit, formData, onCha
                                 />
                                 {errores.stock && <div className="invalid-feedback">{errores.stock}</div>}
                             </div>
+
                             <div className="mb-3">
-                                <label htmlFor="prodDescripcion" className="form-label">Descripcion</label>
+                                <label htmlFor="prodDescripcion" className="form-label">Descripción</label>
                                 <textarea 
                                     className={`form-control ${errores.descripcion ? 'is-invalid' : ''}`} 
                                     id="prodDescripcion" 
@@ -105,6 +129,7 @@ export default function ProductoModal({ show, onClose, onSubmit, formData, onCha
                                 {errores.descripcion && <div className="invalid-feedback">{errores.descripcion}</div>}
                             </div>
                         </div>
+
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancelar</button>
                             <button type="submit" className="btn btn-success">Guardar</button>

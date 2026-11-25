@@ -2,71 +2,10 @@ import React, { useState, useEffect } from 'react';
 import styles from './gestion_productos.module.css';
 import AdminSidebar from '../../../components/sidebar/sidebaradmin';
 import ProductoModal from '../../../components/modal/modalcrudproductos';
+import {obtenerProductos,crearProducto,actualizarProducto,eliminarProductoApi} from '../../../api/productoApi';
 
-const productosEstrellaIniciales = [
-    {
-        "id": 1,
-        "nombre": "Manzana Fuji",
-        "imagen": "../img/manzana.png",
-        "precio": 1200,
-        "stock": 150,
-        "descripcion": "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule. Perfectas para meriendas saludables o como ingrediente en postres."
-    },
-    {
-        "id": 2,
-        "nombre": "Naranjas Valencia",
-        "imagen": "../img/naranja.png",
-        "precio": 1000,
-        "stock": 200,
-        "descripcion": "Jugosas y ricas en vitamina C, estas naranjas Valencia son ideales para zumos frescos y refrescantes."
-    },
-    {
-        "id": 3,
-        "nombre": "Plátanos Cavendish",
-        "imagen": "../img/platano.png",
-        "precio": 800,
-        "stock": 250,
-        "descripcion": "Plátanos maduros y dulces, perfectos para el desayuno o como snack energético."
-    },
-    {
-        "id": 4,
-        "nombre": "Zanahorias Orgánicas",
-        "imagen": "../img/zanahoria.png",
-        "precio": 900,
-        "stock": 100,
-        "descripcion": "Zanahorias crujientes cultivadas sin pesticidas en la Región de O'Higgins."
-    },
-    {
-        "id": 5,
-        "nombre": "Espinacas Frescas",
-        "imagen": "../img/espinaca.png",
-        "precio": 700,
-        "stock": 80,
-        "descripcion": "Espinacas frescas y nutritivas, perfectas para ensaladas y batidos verdes."
-    },
-    {
-        "id": 6,
-        "nombre": "Pimientos Tricolores",
-        "imagen": "../img/pimenton.png",
-        "precio": 1500,
-        "stock": 120,
-        "descripcion": "Pimientos rojos, amarillos y verdes, ideales para salteados y platos coloridos."
-    }
-];
-
-// Función de validación adaptada al estilo solicitado
-const validarProducto = (datos, productosExistentes, editandoId) => {
+const validarProducto = (datos) => {
     const errores = {};
-
-    const idStr = String(datos.id).trim();
-    const idNum = parseInt(datos.id);
-    if (idStr === '') {
-        errores.id = 'El ID es obligatorio.';
-    } else if (isNaN(idNum) || idNum <= 0) {
-        errores.id = 'El ID debe ser un número mayor a 0.';
-    } else if (editandoId === null && productosExistentes.some(p => p.id === idNum)) {
-        errores.id = 'El ID ya existe. Ingrese un ID único.';
-    }
 
     const nombre = datos.nombre.trim();
     if (nombre === '') {
@@ -92,23 +31,16 @@ const validarProducto = (datos, productosExistentes, editandoId) => {
         errores.descripcion = 'La descripción no debe superar los 500 caracteres.';
     }
 
+    if (!datos.idCategoria) {
+        errores.idCategoria = 'Debe seleccionar una categoría.';
+    }
+
     return errores;
 };
 
 export default function GestionProductos() {
-    const [productos, setProductos] = useState(() => {
-        let guardados = localStorage.getItem("productosEstrellas");
-        if (guardados) {
-            try {
-                let parsed = JSON.parse(guardados);
-                if (parsed && parsed.length > 0) return parsed;
-            } catch (e) {
-                console.error(e);
-            }
-        }
-        localStorage.setItem("productosEstrellas", JSON.stringify(productosEstrellaIniciales));
-        return productosEstrellaIniciales;
-    });
+    const [productos, setProductos] = useState([]);
+    const [cargando, setCargando] = useState(true);
 
     const [showModal, setShowModal] = useState(false);
     const [editandoId, setEditandoId] = useState(null);
@@ -118,7 +50,8 @@ export default function GestionProductos() {
         imagen: '',
         precio: '',
         stock: '',
-        descripcion: ''
+        descripcion: '',
+        idCategoria: '1'
     });
 
     const [errores, setErrores] = useState({});
@@ -128,9 +61,25 @@ export default function GestionProductos() {
         msg: '',
     });
 
+    const cargarProductosDesdeBackend = async () => {
+        try {
+            setCargando(true);
+            const data = await obtenerProductos();
+            const normalizados = data.map(p => ({
+                ...p,
+                id: p.id || p.idProducto || p.id_producto
+            }));
+            setProductos(normalizados);
+        } catch (error) {
+            console.error('Error al cargar productos:', error);
+        } finally {
+            setCargando(false);
+        }
+    };
+
     useEffect(() => {
-        localStorage.setItem("productosEstrellas", JSON.stringify(productos));
-    }, [productos]);
+        cargarProductosDesdeBackend();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -139,7 +88,15 @@ export default function GestionProductos() {
 
     const abrirModalNuevoProducto = () => {
         setEditandoId(null);
-        setFormData({ id: '', nombre: '', imagen: '', precio: '', stock: '', descripcion: '' });
+        setFormData({
+            id: '',
+            nombre: '',
+            imagen: '',
+            precio: '',
+            stock: '',
+            descripcion: '',
+            idCategoria: '1'
+        });
         setErrores({});
         setAlerta({ mostrar: false, variant: 'success', msg: '' });
         setShowModal(true);
@@ -153,26 +110,31 @@ export default function GestionProductos() {
         setFormData({
             id: producto.id,
             nombre: producto.nombre,
-            imagen: producto.imagen,
+            imagen: producto.imagen || '',
             precio: producto.precio,
             stock: producto.stock,
-            descripcion: producto.descripcion || ''
+            descripcion: producto.descripcion || '',
+            idCategoria: String(producto.categoria?.idCategoria || '1')
         });
         setErrores({});
         setAlerta({ mostrar: false, variant: 'success', msg: '' });
         setShowModal(true);
     };
 
-    const eliminarProducto = (id) => {
-        if (window.confirm(`¿Seguro que deseas eliminar el producto ${id}?`)) {
-            let productosActualizados = productos.filter(p => p.id !== id);
-            setProductos(productosActualizados);
+    const eliminarProducto = async (id) => {
+        if (!window.confirm(`¿Seguro que deseas eliminar el producto #${id}?`)) return;
+        try {
+            await eliminarProductoApi(id);
+            await cargarProductosDesdeBackend();
+        } catch (error) {
+            alert('Error al eliminar producto. Verifica que tengas sesión de ADMIN.');
+            console.error(error);
         }
     };
 
-    const guardarProducto = (gp) => {
+    const guardarProducto = async (gp) => {
         gp.preventDefault();
-        const nuevosErrores = validarProducto(formData, productos, editandoId);
+        const nuevosErrores = validarProducto(formData);
         setErrores(nuevosErrores);
 
         if (Object.keys(nuevosErrores).length > 0) {
@@ -184,47 +146,43 @@ export default function GestionProductos() {
             return;
         }
 
-        const idNum = parseInt(formData.id);
-        const precioNum = parseFloat(formData.precio);
-        const stockNum = parseInt(formData.stock);
+        const payload = {
+            nombre: formData.nombre.trim(),
+            imagen: formData.imagen.trim(),
+            precio: parseFloat(formData.precio),
+            stock: parseInt(formData.stock),
+            descripcion: formData.descripcion.trim(),
+            categoria: {
+                idCategoria: parseInt(formData.idCategoria)
+            }
+        };
 
-        let nuevosProductos = [...productos];
-        if (editandoId !== null) {
-            nuevosProductos = nuevosProductos.map(p => {
-                if (p.id === parseInt(editandoId)) {
-                    return { 
-                        id: p.id, 
-                        nombre: formData.nombre.trim(), 
-                        imagen: formData.imagen.trim(), 
-                        precio: precioNum, 
-                        stock: stockNum, 
-                        descripcion: formData.descripcion.trim() 
-                    };
-                }
-                return p;
+        try {
+            if (editandoId !== null) {
+                await actualizarProducto(editandoId, payload);
+            } else {
+                await crearProducto(payload);
+            }
+
+            await cargarProductosDesdeBackend();
+            setAlerta({
+                mostrar: true,
+                variant: 'success',
+                msg: '¡Producto guardado en la base de datos! 🌿',
             });
-        } else {
-            nuevosProductos.push({
-                id: idNum, 
-                nombre: formData.nombre.trim(), 
-                imagen: formData.imagen.trim(), 
-                precio: precioNum, 
-                stock: stockNum, 
-                descripcion: formData.descripcion.trim()
+
+            setTimeout(() => {
+                setShowModal(false);
+                setAlerta((prev) => ({ ...prev, mostrar: false }));
+            }, 1200);
+        } catch (error) {
+            console.error('Error al guardar producto:', error);
+            setAlerta({
+                mostrar: true,
+                variant: 'danger',
+                msg: 'Error al guardar en el servidor. Verifica tu sesión de ADMIN.',
             });
         }
-
-        setProductos(nuevosProductos);
-        setAlerta({
-            mostrar: true,
-            variant: 'success',
-            msg: '¡Producto guardado con éxito! 🌿',
-        });
-
-        setTimeout(() => {
-            setShowModal(false);
-            setAlerta((prev) => ({ ...prev, mostrar: false }));
-        }, 1500);
     };
 
     const productosNormales = productos.filter(p => p.stock > 50);
@@ -243,99 +201,117 @@ export default function GestionProductos() {
                         </button>
                     </div>
 
-                    <div className="table-responsive mb-5">
-                        <table className={`table table-striped align-middle ${styles.tableCustom}`}>
-                            <thead className="table-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Imagen</th>
-                                    <th>Nombre</th>
-                                    <th>Precio ($)</th>
-                                    <th>Stock</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {productosNormales.length === 0 ? (
-                                    <tr>
-                                        <td colSpan="6" className="text-center text-muted py-3">
-                                            No hay productos con stock normal. Todos se encuentran en nivel crítico.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    productosNormales.map(producto => (
-                                        <tr key={producto.id}>
-                                            <td className="fw-bold">{producto.id}</td>
-                                            <td>
-                                                <img 
-                                                    src={producto.imagen} 
-                                                    alt={producto.nombre} 
-                                                    style={{ width: "30px", height: "30px", objectFit: "cover", borderRadius: "4px" }} 
-                                                    onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/45?text=img'; }}
-                                                />
-                                            </td>
-                                            <td>{producto.nombre}</td>
-                                            <td>{producto.precio.toLocaleString("cl-CL")}</td>
-                                            <td>
-                                                <span className="badge bg-success">{producto.stock} un.</span>
-                                            </td>
-                                            <td>
-                                                <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarProducto(producto.id)}>Editar</button>
-                                                <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {/* Productos críticos */}
-                    <div className="mt-4">
-                        <h3 className={`mb-3 ${styles.mainTitle}`} style={{ fontSize: '1.25rem' }}>
-                            ⚠️ Productos en Stock Crítico (≤ 50 unidades)
-                        </h3>
-                        {productosCriticos.length === 0 ? (
-                            <p className="text-muted">No hay productos en estado crítico de stock.</p>
-                        ) : (
-                            <div className="table-responsive">
+                    {cargando ? (
+                        <p className="text-muted">Cargando productos desde la base de datos...</p>
+                    ) : (
+                        <>
+                            <div className="table-responsive mb-5">
                                 <table className={`table table-striped align-middle ${styles.tableCustom}`}>
                                     <thead className="table-dark">
                                         <tr>
                                             <th>ID</th>
                                             <th>Imagen</th>
                                             <th>Nombre</th>
-                                            <th>Stock Actual</th>
+                                            <th>Categoría</th>
+                                            <th>Precio ($)</th>
+                                            <th>Stock</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {productosCriticos.map(producto => (
-                                            <tr key={producto.id}>
-                                                <td className="fw-bold">{producto.id}</td>
-                                                <td>
-                                                    <img 
-                                                        src={producto.imagen} 
-                                                        alt={producto.nombre} 
-                                                        style={{ width: "30px", height: "30px", objectFit: "cover", borderRadius: "4px" }} 
-                                                        onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/45?text=img'; }}
-                                                    />
-                                                </td>
-                                                <td>{producto.nombre}</td>
-                                                <td>
-                                                    <span className="badge bg-danger">{producto.stock} un.</span>
-                                                </td>
-                                                <td>
-                                                    <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarProducto(producto.id)}>Gestionar Stock</button>
-                                                    <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                                        {productosNormales.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="7" className="text-center text-muted py-3">
+                                                    No hay productos con stock normal.
                                                 </td>
                                             </tr>
-                                        ))}
+                                        ) : (
+                                            productosNormales.map(producto => (
+                                                <tr key={producto.id}>
+                                                    <td className="fw-bold">{producto.id}</td>
+                                                    <td>
+                                                        <img 
+                                                            src={producto.imagen} 
+                                                            alt={producto.nombre} 
+                                                            style={{ width: "30px", height: "30px", objectFit: "cover", borderRadius: "4px" }} 
+                                                            onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/45?text=img'; }}
+                                                        />
+                                                    </td>
+                                                    <td>{producto.nombre}</td>
+                                                    <td>
+                                                        <span className="badge bg-light text-dark border">
+                                                            {producto.categoria?.nombreCategoria || 'Sin categoría'}
+                                                        </span>
+                                                    </td>
+                                                    <td>{Number(producto.precio).toLocaleString("es-CL")}</td>
+                                                    <td>
+                                                        <span className="badge bg-success">{producto.stock} un.</span>
+                                                    </td>
+                                                    <td>
+                                                        <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarProducto(producto.id)}>Editar</button>
+                                                        <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
-                        )}
-                    </div>
+
+                            {/* Productos críticos */}
+                            <div className="mt-4">
+                                <h3 className={`mb-3 ${styles.mainTitle}`} style={{ fontSize: '1.25rem' }}>
+                                    ⚠️ Productos en Stock Crítico (≤ 50 unidades)
+                                </h3>
+                                {productosCriticos.length === 0 ? (
+                                    <p className="text-muted">No hay productos en estado crítico de stock.</p>
+                                ) : (
+                                    <div className="table-responsive">
+                                        <table className={`table table-striped align-middle ${styles.tableCustom}`}>
+                                            <thead className="table-dark">
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Imagen</th>
+                                                    <th>Nombre</th>
+                                                    <th>Categoría</th>
+                                                    <th>Stock Actual</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {productosCriticos.map(producto => (
+                                                    <tr key={producto.id}>
+                                                        <td className="fw-bold">{producto.id}</td>
+                                                        <td>
+                                                            <img 
+                                                                src={producto.imagen} 
+                                                                alt={producto.nombre} 
+                                                                style={{ width: "30px", height: "30px", objectFit: "cover", borderRadius: "4px" }} 
+                                                                onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/45?text=img'; }}
+                                                            />
+                                                        </td>
+                                                        <td>{producto.nombre}</td>
+                                                        <td>
+                                                            <span className="badge bg-light text-dark border">
+                                                                {producto.categoria?.nombreCategoria || 'Sin categoría'}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span className="badge bg-danger">{producto.stock} un.</span>
+                                                        </td>
+                                                        <td>
+                                                            <button className="btn btn-sm btn-outline-primary me-1" onClick={() => editarProducto(producto.id)}>Gestionar Stock</button>
+                                                            <button className="btn btn-sm btn-outline-danger" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
                 </main>
             </div>
 
