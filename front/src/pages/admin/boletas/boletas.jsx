@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../../../components/sidebar/sidebaradmin';
 import ModalBoletas from '../../../components/modal/modalboletas';
 import styles from './boletas.module.css';
+import { getTodasLasBoletas, getDetallesBoleta } from '../../../api/boletaApi';
 
 export default function BoletasAdmin() {
     const [boletas, setBoletas] = useState([]);
