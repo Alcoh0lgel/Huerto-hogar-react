@@ -69,7 +69,7 @@ export default function ProductoModal({ show, onClose, onSubmit, formData, onCha
                                     <option value="1">Frutas Frescas</option>
                                     <option value="2">Productos Lácteos</option>
                                     <option value="3">Verduras Orgánicas</option>
-                                    <option value="4">Productos Orgánicos</option>
+                                    <option value="4">Frutos Secos</option>
                                 </select>
                                 {errores.idCategoria && <div className="invalid-feedback">{errores.idCategoria}</div>}
                             </div>
