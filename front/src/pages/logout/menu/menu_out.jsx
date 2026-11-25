@@ -28,31 +28,44 @@ export const Menu = () => {
 
       <main className={styles.contenidoPrincipal}>
         {/* Portada de Presentación en 2 Columnas */}
-        <section className="container mt-3">
+        <section className="container mt-4 mb-4">
           <div className={styles.tarjetaPresentacion}>
-            <div className="row align-items-center g-4">
-              <div className="col-12 col-md-5 text-center">
+            <div className="row g-0 align-items-stretch">
+              
+              {/* Mitad Izquierda: Imagen*/}
+              <div className="col-12 col-lg-6">
                 <img
-                  src="/img/verduras.jpg"
-                  className={styles.imagenPortada}
+                  src="/img/huertohogar2.jpg"
                   alt="Verduras Huerto Hogar"
+                  className={styles.imagenPortada}
                 />
               </div>
 
-              <div className="col-12 col-md-7">
-                <h3 className={styles.tituloSeccion}>Tienda Huerto Hogar</h3>
+              {/* Mitad Derecha: Contenido */}
+              <div className={`col-12 col-lg-6 ${styles.contenidoTarjeta}`}>
+                <span className={styles.badgeLema}>
+                  🌱 Del campo al hogar 🏠
+                </span>
+
+                <h2 className={styles.tituloSeccion}>
+                  Tienda Huerto Hogar
+                </h2>
+
                 <p className={styles.textoPresentacion}>
                   HuertoHogar es una tienda online dedicada a llevar la frescura y calidad de los
                   productos del campo directamente a la puerta de nuestros clientes en Chile. Con más de 6 años de
-                  experiencia, operamos en más de 9 puntos a lo largo del país, incluyendo ciudades clave como
-                  Santiago, Puerto Montt, Villarrica, Nacimiento, Viña del Mar, Valparaíso, y Concepción. Nuestra
-                  misión es conectar a las familias chilenas con el campo, promoviendo un estilo de vida saludable
-                  y sostenible.
+                  experiencia, operamos en más de 9 puntos a lo largo del país —incluyendo Santiago, Viña del Mar,
+                  Valparaíso, Concepción, Villarrica y Puerto Montt—, conectando a las familias chilenas con una
+                  alimentación saludable y sostenible.
                 </p>
-                <div>
-                  <span className={styles.lema}>🌱 Del campo al hogar 🏠</span>
+
+                <div className={styles.pieTarjeta}>
+                  <span>🌿 100% Fresco y Natural</span>
+                  <span>📍 +9 Puntos en Chile</span>
+                  <span>🚚 Directo a tu puerta</span>
                 </div>
               </div>
+
             </div>
           </div>
         </section>

@@ -69,7 +69,7 @@ function Producto() {
               <div className="row align-items-center g-3">
                 <div className="col-12 col-md-4 text-center">
                   <img
-                    src="/img/verduras.jpg"
+                    src="/img/verduras2.jpg"
                     className={styles.imagenPresentacion}
                     alt="Tu Cosecha del Día"
                   />
