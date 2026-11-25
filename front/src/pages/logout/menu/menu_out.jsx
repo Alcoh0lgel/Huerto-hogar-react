@@ -1,64 +1,25 @@
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavigationBar from '../../../components/navbar/navbarout';
-import AppFooter from '../../../components/footer/footer'
+import AppFooter from '../../../components/footer/footer';
+import { obtenerProductos } from '../../../api/productoApi';
 import styles from './menu_out.module.css';
-
-const productosEstrellas = [
-  {
-    id: 1,
-    nombre: "Manzana Fuji",
-    imagen: "/img/manzana.png",
-    precio: 1200,
-    stock: 150,
-    descripcion: "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule..."
-  },
-  {
-    id: 2,
-    nombre: "Naranjas Valencia",
-    imagen: "/img/naranja.png",
-    precio: 1000,
-    stock: 200,
-    descripcion: "Jugosas y ricas en vitamina C..."
-  },
-  {
-    id: 3,
-    nombre: "Plátanos Cavendish",
-    imagen: "/img/platano.png",
-    precio: 800,
-    stock: 250,
-    descripcion: "Plátanos maduros y dulces..."
-  },
-  {
-    id: 4,
-    nombre: "Zanahorias Orgánicas",
-    imagen: "/img/zanahoria.png",
-    precio: 900,
-    stock: 100,
-    descripcion: "Zanahorias crujientes cultivadas sin pesticidas..."
-  },
-  {
-    id: 5,
-    nombre: "Espinacas Frescas",
-    imagen: "/img/espinaca.png",
-    precio: 700,
-    stock: 80,
-    descripcion: "Espinacas frescas y nutritivas..."
-  },
-  {
-    id: 6,
-    nombre: "Pimientos Tricolores",
-    imagen: "/img/pimenton.png",
-    precio: 1500,
-    stock: 120,
-    descripcion: "Pimientos rojos, amarillos y verdes..."
-  }
-];
 
 export const Menu = () => {
   const navigate = useNavigate();
+  const [productosEstrellas, setProductosEstrellas] = useState([]);
 
-  const handleIrAProducto = (producto) => {
-    navigate('/producto'); 
+  useEffect(() => {
+    obtenerProductos()
+      .then((data) => {
+        const disponibles = data.filter((p) => p.stock > 0).slice(0, 6);
+        setProductosEstrellas(disponibles);
+      })
+      .catch((err) => console.error('Error:', err));
+  }, []);
+
+  const handleIrAProducto = () => {
+    navigate('/producto');
   };
 
   return (
@@ -66,22 +27,18 @@ export const Menu = () => {
       <NavigationBar />
 
       <main className={styles.contenidoPrincipal}>
-        
         {/* Portada de Presentación en 2 Columnas */}
         <section className="container mt-3">
           <div className={styles.tarjetaPresentacion}>
             <div className="row align-items-center g-4">
-              
-              {/* Columna Izquierda: Imagen */}
               <div className="col-12 col-md-5 text-center">
-                <img 
-                  src="/img/verduras.jpg" 
+                <img
+                  src="/img/verduras.jpg"
                   className={styles.imagenPortada}
                   alt="Verduras Huerto Hogar"
                 />
               </div>
 
-              {/* Columna Derecha: Texto de la Tienda */}
               <div className="col-12 col-md-7">
                 <h3 className={styles.tituloSeccion}>Tienda Huerto Hogar</h3>
                 <p className={styles.textoPresentacion}>
@@ -96,7 +53,6 @@ export const Menu = () => {
                   <span className={styles.lema}>🌱 Del campo al hogar 🏠</span>
                 </div>
               </div>
-
             </div>
           </div>
         </section>
@@ -107,38 +63,35 @@ export const Menu = () => {
 
           <div className="row g-3 justify-content-center">
             {productosEstrellas.map((prod) => (
-              <div key={prod.id} className="col-12 col-sm-6 col-md-4 col-lg-2">
+              <div key={prod.idProducto || prod.id} className="col-12 col-sm-6 col-md-4 col-lg-2">
                 <div className={styles.cardProducto}>
-                  
                   <div>
                     <h6 className={styles.tituloProducto}>{prod.nombre}</h6>
-                    <img 
-                      src={prod.imagen} 
-                      alt={prod.nombre} 
-                      className={styles.imagenProducto} 
+                    <img
+                      src={prod.imagen}
+                      alt={prod.nombre}
+                      className={styles.imagenProducto}
                     />
                     <p className={styles.precioProducto}>$ {prod.precio} x Kg</p>
                   </div>
 
                   <div>
-                    <button 
+                    <button
                       type="button"
                       className={styles.btnProducto}
-                      onClick={() => handleIrAProducto(prod)}
+                      onClick={handleIrAProducto}
                     >
                       Ir a producto
                     </button>
                   </div>
-
                 </div>
               </div>
             ))}
           </div>
         </section>
-            
       </main>
 
-    <AppFooter/>
+      <AppFooter />
     </>
   );
 };
