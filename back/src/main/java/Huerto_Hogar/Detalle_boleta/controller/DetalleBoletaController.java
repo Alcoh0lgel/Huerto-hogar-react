@@ -61,5 +61,10 @@ public class DetalleBoletaController {
         }
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/boleta/{idBoleta}")
+    public ResponseEntity<List<DetalleBoleta>> obtenerDetallesPorBoleta(@PathVariable int idBoleta) {
+        return ResponseEntity.ok(detalleBoletaService.obtenerPorBoleta(idBoleta));
+    }
+    
 
 }

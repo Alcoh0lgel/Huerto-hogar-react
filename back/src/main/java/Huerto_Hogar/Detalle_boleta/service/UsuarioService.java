@@ -1,6 +1,7 @@
 package Huerto_Hogar.Detalle_boleta.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,4 +63,24 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
         return true;
     }
+    
+    public Optional<Usuario> buscarPorCorreo(String correo) {
+        return usuarioRepository.findByCorreo(correo);
+    }
+
+    public Optional<Usuario> actualizarPerfilPorCorreo(String correo, Usuario datosNuevos) {
+        return usuarioRepository.findByCorreo(correo).map(usuario -> {
+            usuario.setNombre(datosNuevos.getNombre());
+            usuario.setApellido(datosNuevos.getApellido());
+            usuario.setRun(datosNuevos.getRun());
+            usuario.setTelefono(datosNuevos.getTelefono());
+            usuario.setDireccion(datosNuevos.getDireccion());
+            return usuarioRepository.save(usuario);
+ 
+        });
+}
+
+    
+
+
 }

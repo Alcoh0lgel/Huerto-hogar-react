@@ -61,5 +61,8 @@ public class BoletaService {
         boletaRepository.deleteById(id);
         return true;
     }
+    public List<Boleta> obtenerPorCorreo(String correo) {
+        return boletaRepository.findByUsuarioCorreoOrderByIdBoletaDesc(correo);
+    }
 
 }

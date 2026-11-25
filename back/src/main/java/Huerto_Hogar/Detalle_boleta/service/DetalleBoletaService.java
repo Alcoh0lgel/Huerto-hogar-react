@@ -75,4 +75,10 @@ public class DetalleBoletaService {
         detalleBoletaRepository.deleteById(id);
         return true;
     }
+
+    public List<DetalleBoleta> obtenerPorBoleta(int idBoleta) {
+        return detalleBoletaRepository.findByBoletaIdBoleta(idBoleta);
+    }
+
+    
 }

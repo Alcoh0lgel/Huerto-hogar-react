@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import { Offcanvas, Button, Card, Row, Col, Form, Modal } from 'react-bootstrap';
 import { CartContext } from '../../context/cartContext';
 import App_alert from '../alerts/alertas';
+import { getPerfilUsuario } from '../../api/usuarioApi';
+import { crearBoleta, crearDetalleBoleta } from '../../api/boletaApi';
 
 function Carrito() {
   const {
@@ -14,6 +16,7 @@ function Carrito() {
 
   const [cupon, setCupon] = useState('');
   const [descuento, setDescuento] = useState(0);
+  const [procesando, setProcesando] = useState(false);
 
   // Estado de alertas
   const [alerta, setAlerta] = useState({
@@ -74,7 +77,7 @@ function Carrito() {
     setShowPagoModal(true);
   };
 
-  const handleProcesarPago = (e) => {
+  const handleProcesarPago = async(e) => {
     e.preventDefault();
 
     if (!/^\d{16}$/.test(datosPago.numeroTarjeta)) {
@@ -91,33 +94,84 @@ function Carrito() {
       mostrarAlerta('danger', 'El CVV debe tener 3 dígitos.');
       return;
     }
+    try {
+      setProcesando(true);
+      cerrarAlert();
 
-    cerrarAlert();
-    setPagoExitoso(true);
-    setTimeout(() => {
-      vaciarCarrito();
-      setPagoExitoso(false);
-      setShowPagoModal(false);
-      setDescuento(0);
-      setCupon('');
-      setDatosPago({
-        nombreTarhabiente: '',
-        numeroTarjeta: '',
-        expiracion: '',
-        cvv: '',
+      // 1. Obtener usuario autenticado
+      const usuario = await getPerfilUsuario();
+      if (!usuario || !usuario.id_usuario) {
+        mostrarAlerta('danger', 'Debes iniciar sesión para completar la compra.');
+        setProcesando(false);
+        return;
+      }
+
+      // 2. Registrar la boleta en el backend
+      const fechaHoy = new Date().toLocaleDateString('es-CL');
+      const nuevaBoleta = await crearBoleta({
+        fechaEmision: fechaHoy,
+        montoTotal: total,
+        nombreEmisor: 'Huerto Hogar SpA',
+        rutEmisor: '76.543.210-K',
+        usuario: { id_usuario: usuario.id_usuario },
       });
-    }, 2500);
+
+      // 3. Agrupar productos repetidos en el carrito y guardar detalles
+      const agrupados = {};
+      carrito.forEach((item) => {
+        const prodId = item.id_producto || item.idProducto || item.id;
+        if (!prodId) return;
+        if (!agrupados[prodId]) {
+          agrupados[prodId] = {
+            idProducto: prodId,
+            cantidad: 0,
+            precioUnitario: item.precio,
+          };
+        }
+        agrupados[prodId].cantidad += 1;
+      });
+
+      for (const prodId of Object.keys(agrupados)) {
+        const det = agrupados[prodId];
+        await crearDetalleBoleta({
+          cantidad: det.cantidad,
+          precioUnitario: det.precioUnitario,
+          subtotal: det.cantidad * det.precioUnitario,
+          boleta: { idBoleta: nuevaBoleta.idBoleta },
+          producto: { id_producto: det.idProducto, idProducto: det.idProducto },
+        });
+      }
+
+      setPagoExitoso(true);
+      setTimeout(() => {
+        vaciarCarrito();
+        setPagoExitoso(false);
+        setShowPagoModal(false);
+        setDescuento(0);
+        setCupon('');
+        setDatosPago({
+          nombreTarhabiente: '',
+          numeroTarjeta: '',
+          expiracion: '',
+          cvv: '',
+        });
+      }, 2500);
+    } catch (error) {
+      console.error('Error al registrar la compra:', error);
+      mostrarAlerta('danger', 'Ocurrió un error al generar tu boleta en el servidor.');
+    } finally {
+      setProcesando(false);
+    }
   };
 
+  
   return (
     <>
-      {/* Offcanvas del Carrito */}
       <Offcanvas show={showCarrito} onHide={handleCloseCarrito} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Carrito de Compras 🛒</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body className="d-flex flex-column">
-
           <App_alert
             mostrarAlert={alerta.mostrar}
             cerrarAlert={cerrarAlert}
@@ -161,7 +215,6 @@ function Carrito() {
             )}
           </div>
 
-          {/* Sección de Cupón y Total */}
           {carrito.length > 0 && (
             <div className="border-top pt-3 mt-auto">
               <Form.Group className="mb-3">
@@ -204,7 +257,6 @@ function Carrito() {
         </Offcanvas.Body>
       </Offcanvas>
 
-      {/* Modal Simulación Pasarela de Pago */}
       <Modal show={showPagoModal} onHide={() => setShowPagoModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Pasarela de Pago 💳</Modal.Title>
@@ -213,8 +265,8 @@ function Carrito() {
           {pagoExitoso ? (
             <div className="text-center py-4">
               <h3 className="text-success mb-3">¡Pago Exitoso! 🎉</h3>
-              <p>Tu pedido ha sido procesado correctamente.</p>
-              <p className="text-muted small">Gracias por comprar en Huerto Hogar 🌱</p>
+              <p>Tu pedido ha sido procesado y tu boleta fue emitida.</p>
+              <p className="text-muted small">Puedes revisarla en tu Perfil → Mis Boletas 🌱</p>
             </div>
           ) : (
             <Form onSubmit={handleProcesarPago}>
@@ -289,8 +341,13 @@ function Carrito() {
                 </Col>
               </Row>
 
-              <Button type="submit" variant="success" className="w-100 mt-2 py-2 fw-bold">
-                Pagar ${total}
+              <Button
+                type="submit"
+                variant="success"
+                className="w-100 mt-2 py-2 fw-bold"
+                disabled={procesando}
+              >
+                {procesando ? 'Procesando compra...' : `Pagar $${total}`}
               </Button>
             </Form>
           )}
