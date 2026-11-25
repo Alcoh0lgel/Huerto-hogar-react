@@ -2,7 +2,7 @@ package Huerto_Hogar.Detalle_boleta.controller;
 
 import java.util.List;
 import java.util.Map;
-
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +68,28 @@ public class UsuarioController {
         }
         return ResponseEntity.ok(Map.of("mensaje", "Usuario eliminado con éxito"));
     }
+
+    @GetMapping("/perfil")
+    public ResponseEntity<Usuario> obtenerPerfil(Authentication auth) {
+        String correo = auth.getName();
+        return usuarioService.buscarPorCorreo(correo)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @PutMapping("/perfil")
+    public ResponseEntity<Usuario> actualizarPerfil(@RequestBody Usuario datosNuevos, Authentication auth) {
+        String correo = auth.getName();
+        return usuarioService.actualizarPerfilPorCorreo(correo, datosNuevos)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+
+
+
+
+    
 
 
 
