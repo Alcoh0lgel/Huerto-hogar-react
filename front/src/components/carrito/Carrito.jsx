@@ -4,6 +4,7 @@ import { CartContext } from '../../context/cartContext';
 import App_alert from '../alerts/alertas';
 import { getPerfilUsuario } from '../../api/usuarioApi';
 import { crearBoleta, crearDetalleBoleta } from '../../api/boletaApi';
+import { getToken } from '../../auth/auth';
 
 function Carrito() {
   const {
@@ -72,6 +73,16 @@ function Carrito() {
 
   // Manejo de la Pasarela de Pago
   const handleAbrirPago = () => {
+    const token = getToken();
+    if (!token) {
+      mostrarAlerta('warning', 'Debes iniciar sesión para completar tu compra. Redirigiendo...');
+      setTimeout(() => {
+        handleCloseCarrito();
+        window.location.href = '/acceder';
+      }, 1500);
+      return;
+    }
+
     handleCloseCarrito();
     cerrarAlert();
     setShowPagoModal(true);
