@@ -75,8 +75,8 @@ export const Menu = () => {
           <h2 className={styles.tituloEstrella}>Nuestros Productos Estrella 🌟</h2>
 
           <div className="row g-3 justify-content-center">
-            {productosEstrellas.map((prod) => (
-              <div key={prod.idProducto || prod.id} className="col-12 col-sm-6 col-md-4 col-lg-2">
+            {productosEstrellas.map((prod, index) => (
+              <div key={prod.idProducto || prod.idProducto|| prod.id ||index} className="col-12 col-sm-6 col-md-4 col-lg-2">
                 <div className={styles.cardProducto}>
                   <div>
                     <h6 className={styles.tituloProducto}>{prod.nombre}</h6>
