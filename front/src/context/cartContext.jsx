@@ -20,8 +20,27 @@ export function CartProvider({ children }) {
     setCarrito((prev) => [...prev, producto]);
   };
 
+  // Disminuye 1 unidad por índice sin preguntar confirmación
+  const disminuirUnidadCarrito = (index) => {
+    setCarrito((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Elimina TODAS las unidades de un producto por su ID (con una sola confirmación)
+  const eliminarTodosDelProducto = (idProducto, nombreProducto) => {
+    if (window.confirm(`¿Deseas eliminar todas las unidades de "${nombreProducto}" del carrito?`)) {
+      setCarrito((prev) =>
+        prev.filter((item) => {
+          const itemId = item.id_producto || item.idProducto || item.id;
+          return Number(itemId) !== Number(idProducto);
+        })
+      );
+      return true;
+    }
+    return false;
+  };
+
   const eliminarProductoCarrito = (index) => {
-    if (confirm(`¿Deseas eliminar ${carrito[index]?.nombre} del carrito?`)) {
+    if (window.confirm(`¿Deseas eliminar ${carrito[index]?.nombre} del carrito?`)) {
       setCarrito((prev) => prev.filter((_, i) => i !== index));
     }
   };
@@ -38,6 +57,8 @@ export function CartProvider({ children }) {
       value={{
         carrito,
         agregarAlCarrito,
+        disminuirUnidadCarrito,
+        eliminarTodosDelProducto,
         eliminarProductoCarrito,
         vaciarCarrito,
         showCarrito,
