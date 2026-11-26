@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { cerrarSesion } from '../../auth/auth';
 
 export default function AdminSidebar({ vistaActiva }) {
     return (
@@ -53,7 +54,7 @@ export default function AdminSidebar({ vistaActiva }) {
                 </li>
             </ul>
             <hr />
-            <Link to="/" className="btn btn-outline-danger w-100 btn-sm">Salir</Link>
+            <Link to="/" className="btn btn-outline-danger w-100 btn-sm"onClick={cerrarSesion}>Salir</Link>
         </aside>
     );
 }
