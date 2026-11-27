@@ -327,9 +327,6 @@ export const CrearCuenta = () => {
                     Enviar
                   </button>
                 </div>
-                <Link to="/acceder" className={styles.linkAcceder}>
-                  Iniciar sesión
-                </Link>
               </div>
             </div>
           </div>

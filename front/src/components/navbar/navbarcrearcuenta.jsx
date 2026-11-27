@@ -19,6 +19,9 @@ function NavbarCrearCuenta() {
             <span>Huerto Hogar</span>
           </Link>
 
+          <Nav.Link as={Link} to="/acceder" className="py-0 text-secondary">
+                Ir a iniciar sesion
+              </Nav.Link>
 
         </div>
       </nav>
