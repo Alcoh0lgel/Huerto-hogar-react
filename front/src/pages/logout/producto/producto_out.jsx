@@ -12,6 +12,7 @@ const CATEGORIAS = [
   { id: '2', nombre: 'Productos Lácteos' },
   { id: '3', nombre: 'Verduras Orgánicas' },
   { id: '4', nombre: 'Frutos Secos' },
+  { id: '5', nombre: 'Productos Orgánicos'},
 ];
 
 function Producto() {
