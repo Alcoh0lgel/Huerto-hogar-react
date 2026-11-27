@@ -7,7 +7,7 @@ import { Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { CartContext } from '../../context/cartContext';
 import styles from './navbar.module.css';
-
+import { cerrarSesion } from '../../auth/auth';
 function NavigationBarIn() {
   const { carrito, handleOpenCarrito } = useContext(CartContext);
 
@@ -57,7 +57,7 @@ function NavigationBarIn() {
               </Button>
 
               <div className="d-flex flex-column text-end">
-                <Nav.Link as={Link} to="/" className={styles.authLink}>
+                <Nav.Link as={Link} to="/" className={styles.authLink} onClick={cerrarSesion}>
                   Salir
                 </Nav.Link>
               </div>
